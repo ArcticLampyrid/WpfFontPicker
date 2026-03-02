@@ -3,22 +3,19 @@ using System.Windows.Controls;
 
 namespace ALampy.XamlFontPicker.WPF
 {
-    /// <summary>
-    /// FontPicker.xaml 的交互逻辑
-    /// </summary>
     public partial class FontPicker : UserControl
     {
-        public PackedFontInfo SelectedFontInfo
+        public PickedFontInfo SelectedFontInfo
         {
-            get { return (PackedFontInfo)GetValue(SelectedFontInfoProperty); }
+            get { return (PickedFontInfo)GetValue(SelectedFontInfoProperty); }
             set { SetValue(SelectedFontInfoProperty, value); }
         }
 
         public static readonly DependencyProperty SelectedFontInfoProperty =
             DependencyProperty.Register(nameof(SelectedFontInfo),
-                typeof(PackedFontInfo),
+                typeof(PickedFontInfo),
                 typeof(FontPicker),
-                new PropertyMetadata(new PackedFontInfo(), OnSelectedFontInfoPropertyChanged));
+                new PropertyMetadata(new PickedFontInfo(), OnSelectedFontInfoPropertyChanged));
 
         private static void OnSelectedFontInfoPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
@@ -29,7 +26,7 @@ namespace ALampy.XamlFontPicker.WPF
         public FontPicker()
         {
             InitializeComponent();
-            SelectedFontInfo = PackedFontInfo.From(this);
+            SelectedFontInfo = PickedFontInfoAccessor.From(this);
         }
 
         public void OpenFontDialog()

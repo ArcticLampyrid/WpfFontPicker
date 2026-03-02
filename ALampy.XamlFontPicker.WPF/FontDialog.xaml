@@ -32,7 +32,7 @@
             </Grid.RowDefinitions>
             <Label Grid.Row="0" Grid.Column="0" Content="Family" FontSize="18"/>
             <ListBox 
-            SelectedItem="{Binding FontFamily, ElementName=PreviewTextBlock}"
+            SelectedItem="{Binding SelectedFontFamily}"
             x:Name="FontFamilyListbox" ItemsSource="{x:Static Fonts.SystemFontFamilies}" ItemsPanel="{StaticResource VSP}" Grid.Row="1" Grid.Column="0">
                 <ListBox.ItemTemplate>
                     <DataTemplate>
@@ -41,7 +41,7 @@
                 </ListBox.ItemTemplate>
             </ListBox>
             <Label Grid.Row="0" Grid.Column="1" Content="Typeface" FontSize="18"/>
-            <ListBox x:Name="FamilyTypefaceListBox" ItemsSource="{Binding SelectedItem.FamilyTypefaces, ElementName=FontFamilyListbox}" FontFamily="{Binding SelectedItem, ElementName=FontFamilyListbox}" Grid.Row="1" Grid.Column="1">
+            <ListBox x:Name="FamilyTypefaceListBox" ItemsSource="{Binding SelectedFontFamily.FamilyTypefaces}" SelectedItem="{Binding SelectedTypeface}" FontFamily="{Binding SelectedFontFamily}" Grid.Row="1" Grid.Column="1">
                 <ListBox.ItemTemplate>
                     <DataTemplate>
                         <TextBlock Text="{Binding AdjustedFaceNames, Converter={StaticResource LanguageSpecificStringConverter}, Mode=OneWay}" 
@@ -54,7 +54,7 @@
             <Label Grid.Row="0" Grid.Column="2" Content="Size" FontSize="18"/>
             <DockPanel Grid.Row="1" Grid.Column="2">
                 <ComboBox 
-                Text="{Binding FontSize, ElementName=PreviewTextBlock}"
+                Text="{Binding FontSize}"
                 DockPanel.Dock="Top" IsEditable="True" x:Name="FontSizeComboBox" FontSize="18">
                     <System:Int32>72</System:Int32>
                     <System:Int32>48</System:Int32>
@@ -74,17 +74,19 @@
                     <System:Int32>8</System:Int32>
                     <ComboBox.ItemTemplate>
                         <DataTemplate>
-                            <TextBlock Text="{Binding}" FontSize="{Binding}" FontFamily="{Binding SelectedItem, ElementName=FontFamilyListbox}" />
+                            <TextBlock Text="{Binding}" FontSize="{Binding}" FontFamily="{Binding DataContext.SelectedFontFamily, RelativeSource={RelativeSource AncestorType=Window}}" />
                         </DataTemplate>
                     </ComboBox.ItemTemplate>
                 </ComboBox>
                 <TextBlock 
                 x:Name="PreviewTextBlock"
-                FontStyle="{Binding SelectedItem.Style, ElementName=FamilyTypefaceListBox}"
-                FontWeight="{Binding SelectedItem.Weight, ElementName=FamilyTypefaceListBox}"
-                FontStretch="{Binding SelectedItem.Stretch, ElementName=FamilyTypefaceListBox}"
+                FontFamily="{Binding SelectedFontFamily}"
+                FontStyle="{Binding SelectedTypeface.Style}"
+                FontWeight="{Binding SelectedTypeface.Weight}"
+                FontStretch="{Binding SelectedTypeface.Stretch}"
+                FontSize="{Binding FontSize}"
                 TextWrapping = "Wrap" TextAlignment="Center" VerticalAlignment="Center"
-                Text="{Binding FontFamily.FamilyNames, Converter={StaticResource LanguageSpecificStringConverter}, RelativeSource={RelativeSource Mode=Self}}" />
+                Text="{Binding SelectedFontFamily.FamilyNames, Converter={StaticResource LanguageSpecificStringConverter}, Mode=OneWay}" />
             </DockPanel>
         </Grid>
     </DockPanel>

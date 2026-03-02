@@ -5,21 +5,16 @@ using System.Windows.Media;
 
 namespace ALampy.XamlFontPicker.WPF
 {
-    /// <summary>
-    /// FontDialog.xaml 的交互逻辑
-    /// </summary>
     public partial class FontDialog : Window
     {
-        public PackedFontInfo SelectedFontInfo
+        public PickedFontInfo SelectedFontInfo
         {
-            get
-            {
-                return PackedFontInfo.From(PreviewTextBlock);
-            }
+            get => ViewModel.SelectedFontInfo;
             set
             {
                 if (value == null)
                     throw new ArgumentNullException(nameof(SelectedFontInfo));
+                ViewModel.FontSize = value.Size;
                 FontFamily actualFontFamily = null;
                 foreach (var item in FontFamilyListbox.Items)
                 {
@@ -31,16 +26,19 @@ namespace ALampy.XamlFontPicker.WPF
                 }
                 if (actualFontFamily != null)
                 {
-                    PreviewTextBlock.FontFamily = actualFontFamily;
+                    ViewModel.SelectedFontFamily = actualFontFamily;
+                    ViewModel.SelectedTypeface = actualFontFamily.FamilyTypefaces
+                        .FirstOrDefault(x => x.Stretch == value.Stretch && x.Style == value.Style && x.Weight == value.Weight);
                 }
-                PreviewTextBlock.FontSize = value.Size;
-                FamilyTypefaceListBox.SelectedItem = actualFontFamily?.FamilyTypefaces
-                    .First(x => x.Stretch == value.Stretch && x.Style == value.Style && x.Weight == value.Weight);
             }
         }
+
+        public FontDialogViewModel ViewModel { get; } = new FontDialogViewModel();
+
         public FontDialog()
         {
             InitializeComponent();
+            DataContext = ViewModel;
         }
 
         private void OkButton_Click(object sender, RoutedEventArgs e)

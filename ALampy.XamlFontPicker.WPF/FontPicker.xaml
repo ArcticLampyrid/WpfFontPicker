@@ -59,7 +59,7 @@
         </Button>
         <Label 
             x:Name="FontInfoLabel"
-            d:DataContext="{d:DesignInstance {x:Type local:PackedFontInfo}}" 
+            d:DataContext="{d:DesignInstance {x:Type local:PickedFontInfo}}" 
             FontFamily="{Binding Family, Mode=OneWay}" 
             FontStretch="{Binding Stretch, Mode=OneWay}" 
             FontStyle="{Binding Style, Mode=OneWay}"

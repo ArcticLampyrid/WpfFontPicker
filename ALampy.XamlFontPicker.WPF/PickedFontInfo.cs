@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Configuration;
@@ -11,13 +11,14 @@ namespace ALampy.XamlFontPicker.WPF
 {
     [Serializable]
     [SettingsSerializeAs(SettingsSerializeAs.Binary)]
-    public class PackedFontInfo : IEquatable<PackedFontInfo>, ISerializable
+    public class PickedFontInfo : IEquatable<PickedFontInfo>, ISerializable
     {
         public FontFamily Family { get; }
         public FontStretch Stretch { get; }
         public FontStyle Style { get; }
         public FontWeight Weight { get; }
         public double Size { get; }
+
         public string FamilyName => LanguageSpecificStringConverter.GetValue(Family.FamilyNames);
         public string TypefaceName => LanguageSpecificStringConverter.GetValue(new FamilyTypeface()
         {
@@ -26,32 +27,13 @@ namespace ALampy.XamlFontPicker.WPF
             Weight = Weight
         }.AdjustedFaceNames);
 
-        public void ApplyTo(dynamic control)
-        {
-            control.FontFamily = this.Family;
-            control.FontStretch = this.Stretch;
-            control.FontStyle = this.Style;
-            control.FontWeight = this.Weight;
-            control.FontSize = this.Size;
-        }
-
-        public static PackedFontInfo From(dynamic control)
-        {
-            return new PackedFontInfo(
-                control.FontFamily,
-                control.FontStretch,
-                control.FontStyle,
-                control.FontWeight,
-                control.FontSize);
-        }
-
-        public PackedFontInfo() : this(new FontFamily(), FontStretches.Normal, FontStyles.Normal, FontWeights.Normal, 12)
+        public PickedFontInfo() : this(new FontFamily(), FontStretches.Normal, FontStyles.Normal, FontWeights.Normal, 12)
         {
         }
 
-        public PackedFontInfo(FontFamily family, FontStretch stretch, FontStyle style, FontWeight weight, double size)
+        public PickedFontInfo(FontFamily family, FontStretch stretch, FontStyle style, FontWeight weight, double size)
         {
-            this.Family = family;
+            this.Family = family ?? new FontFamily();
             this.Stretch = stretch;
             this.Style = style;
             this.Weight = weight;
@@ -74,7 +56,7 @@ namespace ALampy.XamlFontPicker.WPF
             info.AddValue(nameof(Size), Size);
         }
 
-        protected PackedFontInfo(SerializationInfo info, StreamingContext context)
+        protected PickedFontInfo(SerializationInfo info, StreamingContext context)
         {
             if (info == null)
                 throw new ArgumentNullException(nameof(info));
@@ -101,10 +83,10 @@ namespace ALampy.XamlFontPicker.WPF
 
         public override bool Equals(object obj)
         {
-            return Equals(obj as PackedFontInfo);
+            return Equals(obj as PickedFontInfo);
         }
 
-        public bool Equals(PackedFontInfo other)
+        public bool Equals(PickedFontInfo other)
         {
             return other != null &&
                    EqualityComparer<FontFamily>.Default.Equals(Family, other.Family) &&
@@ -125,12 +107,12 @@ namespace ALampy.XamlFontPicker.WPF
             return hashCode;
         }
 
-        public static bool operator ==(PackedFontInfo left, PackedFontInfo right)
+        public static bool operator ==(PickedFontInfo left, PickedFontInfo right)
         {
-            return EqualityComparer<PackedFontInfo>.Default.Equals(left, right);
+            return EqualityComparer<PickedFontInfo>.Default.Equals(left, right);
         }
 
-        public static bool operator !=(PackedFontInfo left, PackedFontInfo right)
+        public static bool operator !=(PickedFontInfo left, PickedFontInfo right)
         {
             return !(left == right);
         }
