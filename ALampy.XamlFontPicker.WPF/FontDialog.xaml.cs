@@ -1,6 +1,9 @@
 ﻿using System;
+using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Windows;
+using System.Windows.Markup;
 using System.Windows.Media;
 
 namespace ALampy.XamlFontPicker.WPF
@@ -38,7 +41,32 @@ namespace ALampy.XamlFontPicker.WPF
         public FontDialog()
         {
             InitializeComponent();
+            LoadCultureDictionary();
             DataContext = ViewModel;
+        }
+
+        private void LoadCultureDictionary()
+        {
+            var culture = CultureInfo.CurrentUICulture;
+            while (!Equals(culture, CultureInfo.InvariantCulture))
+            {
+                try
+                {
+                    Resources.MergedDictionaries.Add(new ResourceDictionary
+                    {
+                        Source = new Uri($"Resources/Strings.{culture.Name}.xaml", UriKind.Relative)
+                    });
+                    return;
+                }
+                catch (IOException)
+                {
+                    culture = culture.Parent;
+                }
+                catch (XamlParseException)
+                {
+                    culture = culture.Parent;
+                }
+            }
         }
 
         private void OkButton_Click(object sender, RoutedEventArgs e)

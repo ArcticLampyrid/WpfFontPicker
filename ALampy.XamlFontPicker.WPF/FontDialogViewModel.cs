@@ -1,4 +1,6 @@
 using System.ComponentModel;
+using System.Globalization;
+using System.Resources;
 using System.Windows;
 using System.Windows.Media;
 
@@ -6,6 +8,9 @@ namespace ALampy.XamlFontPicker.WPF
 {
     public class FontDialogViewModel : INotifyPropertyChanged
     {
+        private static readonly ResourceManager ResourceManager =
+            new ResourceManager("ALampy.XamlFontPicker.WPF.Resources.Strings", typeof(FontDialogViewModel).Assembly);
+
         private FontFamily _selectedFontFamily;
         private FamilyTypeface _selectedTypeface;
         private double _fontSize;
@@ -63,11 +68,23 @@ namespace ALampy.XamlFontPicker.WPF
             }
         }
 
+        public string DialogTitle => GetString(nameof(DialogTitle), "FontDialog_Title");
+        public string LabelFamily => GetString(nameof(LabelFamily), "FontDialog_Label_Family");
+        public string LabelTypeface => GetString(nameof(LabelTypeface), "FontDialog_Label_Typeface");
+        public string LabelSize => GetString(nameof(LabelSize), "FontDialog_Label_Size");
+        public string OkText => GetString(nameof(OkText), "Common_Ok");
+        public string CancelText => GetString(nameof(CancelText), "Common_Cancel");
+
         public event PropertyChangedEventHandler PropertyChanged;
 
         protected virtual void OnPropertyChanged(string propertyName)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+        private static string GetString(string fallback, string key)
+        {
+            return ResourceManager.GetString(key, CultureInfo.CurrentUICulture) ?? fallback;
         }
     }
 }

@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:ALampy.XamlFontPicker.WPF"
         xmlns:System="clr-namespace:System;assembly=System.Runtime"
         mc:Ignorable="d"
-        Title="Choose Font" Height="450" Width="800">
+        Title="{Binding DialogTitle}" Height="450" Width="800">
     <Window.Resources>
         <local:LanguageSpecificStringConverter x:Key="LanguageSpecificStringConverter"/>
         <ItemsPanelTemplate x:Key="VSP">
@@ -16,8 +16,8 @@
     <DockPanel>
         <Grid DockPanel.Dock="Bottom" HorizontalAlignment="Right">
             <UniformGrid Rows="1">
-                <Button Padding="10,5" Margin="5" IsCancel="True" x:Name="CancelButton" Click="CancelButton_Click">Cancel</Button>
-                <Button Padding="10,5" Margin="5" IsDefault="True" x:Name="OkButton" Click="OkButton_Click">OK</Button>
+                <Button Padding="10,5" Margin="5" IsCancel="True" x:Name="CancelButton" Click="CancelButton_Click" Content="{Binding CancelText}" />
+                <Button Padding="10,5" Margin="5" IsDefault="True" x:Name="OkButton" Click="OkButton_Click" Content="{Binding OkText}" />
             </UniformGrid>
         </Grid>
         <Grid>
@@ -30,7 +30,7 @@
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
-            <Label Grid.Row="0" Grid.Column="0" Content="Family" FontSize="18"/>
+            <Label Grid.Row="0" Grid.Column="0" Content="{Binding LabelFamily}" FontSize="18"/>
             <ListBox 
             SelectedItem="{Binding SelectedFontFamily}"
             x:Name="FontFamilyListbox" ItemsSource="{x:Static Fonts.SystemFontFamilies}" ItemsPanel="{StaticResource VSP}" Grid.Row="1" Grid.Column="0">
@@ -40,7 +40,7 @@
                     </DataTemplate>
                 </ListBox.ItemTemplate>
             </ListBox>
-            <Label Grid.Row="0" Grid.Column="1" Content="Typeface" FontSize="18"/>
+            <Label Grid.Row="0" Grid.Column="1" Content="{Binding LabelTypeface}" FontSize="18"/>
             <ListBox x:Name="FamilyTypefaceListBox" ItemsSource="{Binding SelectedFontFamily.FamilyTypefaces}" SelectedItem="{Binding SelectedTypeface}" FontFamily="{Binding SelectedFontFamily}" Grid.Row="1" Grid.Column="1">
                 <ListBox.ItemTemplate>
                     <DataTemplate>
@@ -51,7 +51,7 @@
                     </DataTemplate>
                 </ListBox.ItemTemplate>
             </ListBox>
-            <Label Grid.Row="0" Grid.Column="2" Content="Size" FontSize="18"/>
+            <Label Grid.Row="0" Grid.Column="2" Content="{Binding LabelSize}" FontSize="18"/>
             <DockPanel Grid.Row="1" Grid.Column="2">
                 <ComboBox 
                 Text="{Binding FontSize}"
