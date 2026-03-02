@@ -78,7 +78,8 @@ namespace ALampy.XamlFontPicker.WPF
 
         public override string ToString()
         {
-            return string.Format(CultureInfo.CurrentCulture, "{0} ({1}), Size: {2} ({3} pt)", FamilyName, TypefaceName, Size, Size * 0.75);
+            var pointSize = Size * 72.0 / 96.0;
+            return string.Format(CultureInfo.CurrentCulture, "{0} ({1}), Size: {2:0.##} pt", FamilyName, TypefaceName, pointSize);
         }
 
         public override bool Equals(object obj)

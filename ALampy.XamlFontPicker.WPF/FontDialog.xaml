@@ -4,7 +4,6 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ALampy.XamlFontPicker.WPF"
-        xmlns:System="clr-namespace:System;assembly=System.Runtime"
         mc:Ignorable="d"
         Title="{Binding DialogTitle}" Height="450" Width="800">
     <Window.Resources>
@@ -54,27 +53,13 @@
             <Label Grid.Row="0" Grid.Column="2" Content="{Binding LabelSize}" FontSize="18"/>
             <DockPanel Grid.Row="1" Grid.Column="2">
                 <ComboBox 
-                Text="{Binding FontSize}"
-                DockPanel.Dock="Top" IsEditable="True" x:Name="FontSizeComboBox" FontSize="18">
-                    <System:Int32>72</System:Int32>
-                    <System:Int32>48</System:Int32>
-                    <System:Int32>36</System:Int32>
-                    <System:Int32>28</System:Int32>
-                    <System:Int32>26</System:Int32>
-                    <System:Int32>24</System:Int32>
-                    <System:Int32>22</System:Int32>
-                    <System:Int32>20</System:Int32>
-                    <System:Int32>18</System:Int32>
-                    <System:Int32>16</System:Int32>
-                    <System:Int32>14</System:Int32>
-                    <System:Int32>12</System:Int32>
-                    <System:Int32>11</System:Int32>
-                    <System:Int32>10</System:Int32>
-                    <System:Int32>9</System:Int32>
-                    <System:Int32>8</System:Int32>
+                Text="{Binding FontSizePt, UpdateSourceTrigger=PropertyChanged}"
+                DockPanel.Dock="Top" IsEditable="True" x:Name="FontSizeComboBox" FontSize="18"
+                ItemsSource="{Binding FontSizeOptions}"
+                TextSearch.TextPath="PointSize">
                     <ComboBox.ItemTemplate>
                         <DataTemplate>
-                            <TextBlock Text="{Binding}" FontSize="{Binding}" FontFamily="{Binding DataContext.SelectedFontFamily, RelativeSource={RelativeSource AncestorType=Window}}" />
+                            <TextBlock Text="{Binding PointSize}" FontSize="{Binding PixelSize}" FontFamily="{Binding DataContext.SelectedFontFamily, RelativeSource={RelativeSource AncestorType=Window}}" />
                         </DataTemplate>
                     </ComboBox.ItemTemplate>
                 </ComboBox>
