@@ -6,7 +6,7 @@ using System.Windows;
 using System.Windows.Data;
 using System.Windows.Markup;
 
-namespace QIQI.WpfFontPicker
+namespace ALampy.XamlFontPicker.WPF
 {
     internal class LanguageSpecificStringConverter : IValueConverter
     {

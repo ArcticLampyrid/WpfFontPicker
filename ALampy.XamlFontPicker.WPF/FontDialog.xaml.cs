@@ -3,7 +3,7 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Media;
 
-namespace QIQI.WpfFontPicker
+namespace ALampy.XamlFontPicker.WPF
 {
     /// <summary>
     /// FontDialog.xaml 的交互逻辑

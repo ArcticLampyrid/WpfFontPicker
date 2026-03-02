@@ -1,7 +1,7 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
 
-namespace QIQI.WpfFontPicker
+namespace ALampy.XamlFontPicker.WPF
 {
     /// <summary>
     /// FontPicker.xaml 的交互逻辑

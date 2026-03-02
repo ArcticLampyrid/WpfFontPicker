@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29728.190
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QIQI.WpfFontPicker", "QIQI.WpfFontPicker\QIQI.WpfFontPicker.csproj", "{0D10D2E8-2A31-483A-B981-CFAFFF3904C6}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ALampy.XamlFontPicker.WPF", "ALampy.XamlFontPicker.WPF\ALampy.XamlFontPicker.WPF.csproj", "{0D10D2E8-2A31-483A-B981-CFAFFF3904C6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QIQI.Sample.WpfFontPicker", "QIQI.Sample.WpfFontPicker\QIQI.Sample.WpfFontPicker.csproj", "{D6E6FCCD-3245-4633-B91D-86DAEA80B86B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ALampy.XamlFontPicker.WPF.Sample", "ALampy.XamlFontPicker.WPF.Sample\ALampy.XamlFontPicker.WPF.Sample.csproj", "{D6E6FCCD-3245-4633-B91D-86DAEA80B86B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -1,4 +1,4 @@
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Markup;
 
 [assembly: ThemeInfo(
@@ -10,5 +10,5 @@ using System.Windows.Markup;
                                               // app, or any theme specific resource dictionaries)
 )]
 
-[assembly: XmlnsDefinition("https://github.com/1354092549/WpfFontPicker", "QIQI.WpfFontPicker")]
-[assembly: XmlnsPrefix("https://github.com/1354092549/WpfFontPicker", "fp")]
+[assembly: XmlnsDefinition("https://github.com/ArcticLampyrid/WpfFontPicker", "ALampy.XamlFontPicker.WPF")]
+[assembly: XmlnsPrefix("https://github.com/ArcticLampyrid/WpfFontPicker", "fp")]

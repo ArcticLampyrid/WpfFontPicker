@@ -7,7 +7,7 @@ using System.Runtime.Serialization;
 using System.Windows;
 using System.Windows.Media;
 
-namespace QIQI.WpfFontPicker
+namespace ALampy.XamlFontPicker.WPF
 {
     [Serializable]
     [SettingsSerializeAs(SettingsSerializeAs.Binary)]

@@ -1,16 +1,16 @@
-# WpfFontPicker
-[![NuGet](https://img.shields.io/nuget/v/QIQI.WpfFontPicker.svg)](https://www.nuget.org/packages/QIQI.WpfFontPicker)   
-Namespace: `QIQI.WpfFontPicker`(CLR)  or `xmlns:fp="https://github.com/1354092549/WpfFontPicker"`(XAML)
+﻿# WpfFontPicker
+[![NuGet](https://img.shields.io/nuget/v/ALampy.XamlFontPicker.WPF.svg)](https://www.nuget.org/packages/ALampy.XamlFontPicker.WPF)   
+Namespace: `ALampy.XamlFontPicker.WPF`(CLR)  or `xmlns:fp="https://github.com/ArcticLampyrid/WpfFontPicker"`(XAML)
 
 # Install
-Package Manager `Install-Package QIQI.WpfFontPicker`  
-.NET CLI `dotnet add package QIQI.WpfFontPicker`  
+Package Manager `Install-Package ALampy.XamlFontPicker.WPF`  
+.NET CLI `dotnet add package ALampy.XamlFontPicker.WPF`  
 
 # Usage
-See `QIQI.Sample.WpfFontPicker`
+See `ALampy.XamlFontPicker.WPF.Sample`
 
 # Preview
-![Screenshot 1](https://github.com/1354092549/WpfFontPicker/blob/master/Screenshot/1.png)   
+![Screenshot 1](https://github.com/ArcticLampyrid/WpfFontPicker/blob/master/Screenshot/1.png)   
 
 ```xaml
 <StackPanel Orientation="Vertical">

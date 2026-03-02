@@ -1,6 +1,6 @@
 ﻿using System.Windows;
 
-namespace QIQI.Sample.WpfFontPicker
+namespace ALampy.XamlFontPicker.WPF.Sample
 {
     /// <summary>
     /// Interaction logic for App.xaml

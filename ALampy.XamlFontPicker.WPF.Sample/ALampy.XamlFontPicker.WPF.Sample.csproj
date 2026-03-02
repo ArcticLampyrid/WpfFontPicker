@@ -4,8 +4,8 @@
     <OutputType>WinExe</OutputType>
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <UseWPF>true</UseWPF>
-    <AssemblyName>QIQI.Sample.WpfFontPicker</AssemblyName>
-    <RootNamespace>QIQI.Sample.WpfFontPicker</RootNamespace>
+    <AssemblyName>ALampy.XamlFontPicker.WPF.Sample</AssemblyName>
+    <RootNamespace>ALampy.XamlFontPicker.WPF.Sample</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
@@ -16,7 +16,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\QIQI.WpfFontPicker\QIQI.WpfFontPicker.csproj" />
+    <ProjectReference Include="..\ALampy.XamlFontPicker.WPF\ALampy.XamlFontPicker.WPF.csproj" />
   </ItemGroup>
 
 </Project>
