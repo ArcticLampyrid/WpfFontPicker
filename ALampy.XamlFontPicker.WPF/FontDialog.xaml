@@ -34,7 +34,7 @@
                 <TextBox x:Name="FontSearchTextBox" DockPanel.Dock="Top" Margin="0,0,8,8" FontSize="14" TextChanged="FontSearchTextBox_TextChanged"/>
                 <ListBox 
                 SelectedItem="{Binding SelectedFontFamily}"
-                x:Name="FontFamilyListbox" ItemsSource="{x:Static Fonts.SystemFontFamilies}" ItemsPanel="{StaticResource VSP}">
+                x:Name="FontFamilyListbox" ItemsSource="{Binding FontFamilies}" ItemsPanel="{StaticResource VSP}">
                     <ListBox.ItemTemplate>
                         <DataTemplate>
                             <TextBlock Text="{Binding FamilyNames, Converter={StaticResource LanguageSpecificStringConverter}, Mode=OneWay}" FontFamily="{Binding}"/>

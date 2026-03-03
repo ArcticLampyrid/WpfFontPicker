@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Globalization;
+using System.Linq;
 using System.Resources;
 using System.Windows;
 using System.Windows.Media;
@@ -24,6 +25,8 @@ namespace ALampy.XamlFontPicker.WPF
             _selectedTypeface = null;
             _fontSize = 12;
 
+            FontFamilies = Fonts.SystemFontFamilies.ToList();
+
             FontSizeOptions = new List<FontSizeOption>
             {
                 new FontSizeOption(72, PixelsPerPoint),
@@ -44,6 +47,8 @@ namespace ALampy.XamlFontPicker.WPF
                 new FontSizeOption(8, PixelsPerPoint)
             };
         }
+
+        public IList<FontFamily> FontFamilies { get; }
 
         public IList<FontSizeOption> FontSizeOptions { get; }
 

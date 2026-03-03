@@ -17,11 +17,11 @@ namespace ALampy.XamlFontPicker.WPF
                     throw new ArgumentNullException(nameof(SelectedFontInfo));
                 ViewModel.FontSize = value.Size;
                 FontFamily actualFontFamily = null;
-                foreach (var item in FontFamilyListbox.Items)
+                foreach (var item in ViewModel.FontFamilies)
                 {
-                    if (((FontFamily)item).FamilyNames.Values.FirstOrDefault() == value.Family.FamilyNames.Values.FirstOrDefault())
+                    if (item.FamilyNames.Values.FirstOrDefault() == value.Family.FamilyNames.Values.FirstOrDefault())
                     {
-                        actualFontFamily = (FontFamily)item;
+                        actualFontFamily = item;
                         break;
                     }
                 }
