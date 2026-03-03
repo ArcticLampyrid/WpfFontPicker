@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Media;
 
 namespace ALampy.XamlFontPicker.WPF
@@ -39,6 +40,32 @@ namespace ALampy.XamlFontPicker.WPF
         {
             InitializeComponent();
             DataContext = ViewModel;
+        }
+
+        private void FontSearchTextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            var searchText = FontSearchTextBox.Text;
+            if (string.IsNullOrWhiteSpace(searchText))
+                return;
+
+            var match = FontFamilyListbox.Items
+                .Cast<FontFamily>()
+                .FirstOrDefault(fontFamily => IsFontFamilyMatch(fontFamily, searchText));
+
+            if (match == null)
+                return;
+
+            FontFamilyListbox.SelectedItem = match;
+            FontFamilyListbox.ScrollIntoView(match);
+        }
+
+        private static bool IsFontFamilyMatch(FontFamily fontFamily, string searchText)
+        {
+            if (fontFamily.Source?.IndexOf(searchText, StringComparison.CurrentCultureIgnoreCase) >= 0)
+                return true;
+
+            return fontFamily.FamilyNames.Values
+                .Any(name => name?.IndexOf(searchText, StringComparison.CurrentCultureIgnoreCase) >= 0);
         }
 
         private void OkButton_Click(object sender, RoutedEventArgs e)

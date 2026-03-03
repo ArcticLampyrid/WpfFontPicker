@@ -30,15 +30,18 @@
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
             <Label Grid.Row="0" Grid.Column="0" Content="{Binding LabelFamily}" FontSize="18"/>
-            <ListBox 
-            SelectedItem="{Binding SelectedFontFamily}"
-            x:Name="FontFamilyListbox" ItemsSource="{x:Static Fonts.SystemFontFamilies}" ItemsPanel="{StaticResource VSP}" Grid.Row="1" Grid.Column="0">
-                <ListBox.ItemTemplate>
-                    <DataTemplate>
-                        <TextBlock Text="{Binding FamilyNames, Converter={StaticResource LanguageSpecificStringConverter}, Mode=OneWay}" FontFamily="{Binding}"/>
-                    </DataTemplate>
-                </ListBox.ItemTemplate>
-            </ListBox>
+            <DockPanel Grid.Row="1" Grid.Column="0">
+                <TextBox x:Name="FontSearchTextBox" DockPanel.Dock="Top" Margin="0,0,8,8" FontSize="14" TextChanged="FontSearchTextBox_TextChanged"/>
+                <ListBox 
+                SelectedItem="{Binding SelectedFontFamily}"
+                x:Name="FontFamilyListbox" ItemsSource="{x:Static Fonts.SystemFontFamilies}" ItemsPanel="{StaticResource VSP}">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding FamilyNames, Converter={StaticResource LanguageSpecificStringConverter}, Mode=OneWay}" FontFamily="{Binding}"/>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+            </DockPanel>
             <Label Grid.Row="0" Grid.Column="1" Content="{Binding LabelTypeface}" FontSize="18"/>
             <ListBox x:Name="FamilyTypefaceListBox" ItemsSource="{Binding SelectedFontFamily.FamilyTypefaces}" SelectedItem="{Binding SelectedTypeface}" FontFamily="{Binding SelectedFontFamily}" Grid.Row="1" Grid.Column="1">
                 <ListBox.ItemTemplate>
