@@ -68,36 +68,49 @@ namespace ALampy.XamlFontPicker.WPF
             if (string.IsNullOrWhiteSpace(searchText))
                 return;
 
-            var current = ViewModel.SelectedFontFamily;
-            if (current != null && IsFontFamilyMatch(current, searchText))
-                return;
-
-            var match = ViewModel.FontFamilies
-                .FirstOrDefault(fontFamily => !ReferenceEquals(fontFamily, current) && IsFontFamilyMatch(fontFamily, searchText));
-
-            if (match == null)
+            var matched = GetMatchedFontFamilyName(searchText, out var matchedFontFamily, out var matchedName);
+            if (!matched)
                 return;
 
             _isSelectingFromSearch = true;
             try
             {
-                ViewModel.SelectedFontFamily = match;
+                ViewModel.SelectedFontFamily = matchedFontFamily;
+                // When you add text and subsequently move the cursor to the end
+
+                if (e.Changes.All(x => x.AddedLength > 0) && FontSearchTextBox.SelectionStart == searchText.Length)
+                {
+                    _isUpdatingSearchText = true;
+                    FontSearchTextBox.SelectedText = matchedName.Substring(searchText.Length);
+                    _isUpdatingSearchText = false;
+                }
             }
             finally
             {
                 _isSelectingFromSearch = false;
             }
 
-            FontFamilyListbox.ScrollIntoView(match);
+            FontFamilyListbox.ScrollIntoView(matchedFontFamily);
         }
 
-        private static bool IsFontFamilyMatch(FontFamily fontFamily, string searchText)
-        {
-            if (fontFamily.Source?.IndexOf(searchText, StringComparison.CurrentCultureIgnoreCase) >= 0)
-                return true;
 
-            return fontFamily.FamilyNames.Values
-                .Any(name => name?.IndexOf(searchText, StringComparison.CurrentCultureIgnoreCase) >= 0);
+        private bool GetMatchedFontFamilyName(string searchText, out FontFamily matchedFontFamily, out string matchedName)
+        {
+            foreach (var fontFamily in ViewModel.FontFamilies)
+            {
+                foreach (var name in fontFamily.FamilyNames.Values)
+                {
+                    if (name.StartsWith(searchText, StringComparison.CurrentCultureIgnoreCase) == true)
+                    {
+                        matchedFontFamily = fontFamily;
+                        matchedName = name;
+                        return true;
+                    }
+                }
+            }
+            matchedFontFamily = null;
+            matchedName = null;
+            return false;
         }
 
         private void SyncSearchTextWithCurrentSelection()
