@@ -38,6 +38,7 @@ namespace ALampy.XamlFontPicker.WPF
         public FontDialogViewModel ViewModel { get; } = new FontDialogViewModel();
 
         private bool _isUpdatingSearchText;
+        private bool _isSelectingFromSearch;
 
         public FontDialog()
         {
@@ -49,8 +50,13 @@ namespace ALampy.XamlFontPicker.WPF
 
         private void ViewModel_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            if (e.PropertyName == nameof(FontDialogViewModel.SelectedFontFamily))
-                SyncSearchTextWithCurrentSelection();
+            if (e.PropertyName != nameof(FontDialogViewModel.SelectedFontFamily))
+                return;
+
+            if (_isSelectingFromSearch)
+                return;
+
+            SyncSearchTextWithCurrentSelection();
         }
 
         private void FontSearchTextBox_TextChanged(object sender, TextChangedEventArgs e)
@@ -72,7 +78,16 @@ namespace ALampy.XamlFontPicker.WPF
             if (match == null)
                 return;
 
-            ViewModel.SelectedFontFamily = match;
+            _isSelectingFromSearch = true;
+            try
+            {
+                ViewModel.SelectedFontFamily = match;
+            }
+            finally
+            {
+                _isSelectingFromSearch = false;
+            }
+
             FontFamilyListbox.ScrollIntoView(match);
         }
 
