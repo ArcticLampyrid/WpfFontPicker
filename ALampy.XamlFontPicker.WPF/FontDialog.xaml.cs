@@ -44,13 +44,13 @@ namespace ALampy.XamlFontPicker.WPF
             InitializeComponent();
             DataContext = ViewModel;
             ViewModel.PropertyChanged += ViewModel_PropertyChanged;
-            EnsureSearchTextMatchesCurrentSelection();
+            SyncSearchTextWithCurrentSelection();
         }
 
         private void ViewModel_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             if (e.PropertyName == nameof(FontDialogViewModel.SelectedFontFamily))
-                EnsureSearchTextMatchesCurrentSelection();
+                SyncSearchTextWithCurrentSelection();
         }
 
         private void FontSearchTextBox_TextChanged(object sender, TextChangedEventArgs e)
@@ -85,18 +85,14 @@ namespace ALampy.XamlFontPicker.WPF
                 .Any(name => name?.IndexOf(searchText, StringComparison.CurrentCultureIgnoreCase) >= 0);
         }
 
-        private void EnsureSearchTextMatchesCurrentSelection()
+        private void SyncSearchTextWithCurrentSelection()
         {
             var selectedFontFamily = ViewModel.SelectedFontFamily;
             if (selectedFontFamily == null)
                 return;
 
-            var searchText = FontSearchTextBox.Text;
-            if (!string.IsNullOrWhiteSpace(searchText) && IsFontFamilyMatch(selectedFontFamily, searchText))
-                return;
-
             var fullName = GetFontFamilyFullName(selectedFontFamily);
-            if (string.Equals(searchText, fullName, StringComparison.CurrentCulture))
+            if (string.Equals(FontSearchTextBox.Text, fullName, StringComparison.CurrentCulture))
                 return;
 
             _isUpdatingSearchText = true;
