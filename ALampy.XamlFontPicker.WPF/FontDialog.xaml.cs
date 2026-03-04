@@ -137,6 +137,21 @@ namespace ALampy.XamlFontPicker.WPF
             base.OnClosed(e);
         }
 
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            ScrollSelectedFontIntoView();
+        }
+
+        private void ScrollSelectedFontIntoView()
+        {
+            var selectedFontFamily = ViewModel.SelectedFontFamily;
+            if (selectedFontFamily == null)
+                return;
+
+            FontFamilyListbox.UpdateLayout();
+            FontFamilyListbox.ScrollIntoView(selectedFontFamily);
+        }
+
         private void OkButton_Click(object sender, RoutedEventArgs e)
         {
             try
