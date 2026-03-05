@@ -118,12 +118,12 @@ namespace ALampy.XamlFontPicker.Avalonia
             }
         }
 
-        public string DialogTitle => "Choose Font";
-        public string LabelFamily => "Family";
-        public string LabelTypeface => "Typeface";
-        public string LabelSize => "Size";
-        public string OkText => "OK";
-        public string CancelText => "Cancel";
+        public string DialogTitle => LocalizationService.GetString("FontDialog_Title", "Choose Font");
+        public string LabelFamily => LocalizationService.GetString("FontDialog_Label_Family", "Family");
+        public string LabelTypeface => LocalizationService.GetString("FontDialog_Label_Typeface", "Typeface");
+        public string LabelSize => LocalizationService.GetString("FontDialog_Label_Size", "Size");
+        public string OkText => LocalizationService.GetString("Common_Ok", "OK");
+        public string CancelText => LocalizationService.GetString("Common_Cancel", "Cancel");
 
         public event PropertyChangedEventHandler? PropertyChanged;
 
