@@ -37,6 +37,8 @@ herbstclient set smart_frame_surroundings off
 herbstclient set smart_window_surroundings off
 herbstclient set default_frame_layout grid
 herbstclient set_layout grid
+# Disable floating for all new windows so layout is fully tiled.
+herbstclient rule floating=off
 
 dotnet /app/ALampy.XamlFontPicker.Avalonia.Sample.dll --open-dialog-on-startup >/tmp/app.log 2>&1 &
 APP_PID=$!
