@@ -1,15 +1,44 @@
 ﻿# ALampy.XamlFontPicker
-> (formerly WpfFontPicker) A Xaml control for picking fonts, with a built-in font dialog, supporting WPF and other frameworks (coming soon).
+> (formerly WpfFontPicker) A Xaml control for picking fonts, with a built-in font dialog, supporting WPF and Avalonia.
 
 - WPF: [![NuGet](https://img.shields.io/nuget/v/ALampy.XamlFontPicker.WPF.svg)](https://www.nuget.org/packages/ALampy.XamlFontPicker.WPF)   
   Namespace: `ALampy.XamlFontPicker.WPF`(CLR) or `xmlns:fp="https://github.com/ArcticLampyrid/WpfFontPicker"` (XAML)
+
+- Avalonia 11: Coming soon
+  Namespace: `ALampy.XamlFontPicker.Avalonia` (CLR) or `xmlns:fp="using:ALampy.XamlFontPicker.Avalonia"` (XAML)
 
 ## Install
 - Package Manager `Install-Package ALampy.XamlFontPicker.WPF`  
 - .NET CLI `dotnet add package ALampy.XamlFontPicker.WPF`  
 
-## Usage
+## Usage (WPF)
 - See `ALampy.XamlFontPicker.WPF.Sample`
+
+## Usage (Avalonia 11)
+
+```xml
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:fp="using:ALampy.XamlFontPicker.Avalonia">
+  <StackPanel>
+    <fp:FontPicker x:Name="FontPicker1" Width="400" />
+  </StackPanel>
+</Window>
+```
+
+```csharp
+// Subscribe to selection changes
+_fontPicker.GetObservable(FontPicker.SelectedFontInfoProperty)
+    .Subscribe(fontInfo => Console.WriteLine(fontInfo));
+
+// Or open dialog directly
+var dialog = new FontDialog();
+var result = await dialog.ShowDialog<bool>(this);
+if (result)
+{
+    var fontInfo = dialog.SelectedFontInfo;
+}
+```
 
 ## Preview
 ![Screenshot 1](https://github.com/ArcticLampyrid/WpfFontPicker/blob/master/Screenshot/1.png)   

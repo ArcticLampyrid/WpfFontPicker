@@ -124,9 +124,9 @@
 ## 5) Current Status
 
 - [x] Roadmap drafted
-- [ ] M1 in progress
-- [ ] M2 pending
-- [ ] M3 pending
-- [ ] M4 pending
-- [ ] M5 pending
-- [ ] M6 pending
+- [x] M1 done (Avalonia 项目骨架 + solution 接入)
+- [x] M2 done (PickedFontInfo / FontSizeOption / FontDialogViewModel)
+- [x] M3 done (FontDialog + 搜索与选择行为)
+- [x] M4 done (FontPicker 控件 + sample 集成)
+- [x] M5 done (英文/中文资源 + ViewModel 资源读取)
+- [x] M6 done (README Avalonia 用法 + RELEASE_CHECKLIST)
