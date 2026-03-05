@@ -1,6 +1,7 @@
 using System;
 using System.ComponentModel;
 using System.Linq;
+using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
 using Avalonia.Media;
@@ -46,12 +47,15 @@ namespace ALampy.XamlFontPicker.Avalonia
             InitializeComponent();
             DataContext = ViewModel;
             ViewModel.PropertyChanged += ViewModel_PropertyChanged;
+            FontSearchTextBox.PropertyChanged += FontSearchTextBox_PropertyChanged;
+            CaptureSearchTextState();
         }
 
         private void Window_Loaded(object? sender, RoutedEventArgs e)
         {
             ScrollSelectedFontIntoView();
             SyncSearchTextWithCurrentSelection();
+            CaptureSearchTextState();
         }
 
         private void ViewModel_PropertyChanged(object? sender, PropertyChangedEventArgs e)
@@ -65,49 +69,83 @@ namespace ALampy.XamlFontPicker.Avalonia
             SyncSearchTextWithCurrentSelection();
         }
 
-        private void FontSearchTextBox_TextChanging(object? sender, TextChangingEventArgs e)
+        private void FontSearchTextBox_PropertyChanged(object? sender, AvaloniaPropertyChangedEventArgs e)
         {
             if (_isUpdatingSearchText)
                 return;
 
+            if (e.Property != TextBox.SelectionStartProperty
+                && e.Property != TextBox.SelectionEndProperty)
+            {
+                return;
+            }
+
+            UpdateSelectionSnapshotIfTextMatchesCurrentSnapshot();
+        }
+
+        private void CaptureSearchTextState()
+        {
             _searchTextBeforeChanging = FontSearchTextBox.Text ?? string.Empty;
+            _selectionStartBeforeChanging = FontSearchTextBox.SelectionStart;
+            _selectionEndBeforeChanging = FontSearchTextBox.SelectionEnd;
+        }
+
+        private void UpdateSelectionSnapshotIfTextMatchesCurrentSnapshot()
+        {
+            var currentText = FontSearchTextBox.Text ?? string.Empty;
+            if (!string.Equals(currentText, _searchTextBeforeChanging, StringComparison.InvariantCulture))
+                return;
+
             _selectionStartBeforeChanging = FontSearchTextBox.SelectionStart;
             _selectionEndBeforeChanging = FontSearchTextBox.SelectionEnd;
         }
 
         private void FontSearchTextBox_TextChanged(object? sender, TextChangedEventArgs e)
         {
-            if (_isUpdatingSearchText)
-                return;
-
-            var searchText = FontSearchTextBox.Text;
-            if (string.IsNullOrWhiteSpace(searchText))
-                return;
-
-            var matched = GetMatchedFontFamilyName(searchText, out var matchedFontFamily, out var matchedName);
-            if (!matched)
-                return;
-
-            _isSelectingFromSearch = true;
             try
             {
-                ViewModel.SelectedFontFamily = matchedFontFamily;
+                if (_isUpdatingSearchText)
+                    return;
 
-                if (ShouldApplyAutoCompletion(searchText, matchedName))
+                var searchText = FontSearchTextBox.Text;
+                if (string.IsNullOrWhiteSpace(searchText))
+                    return;
+
+                var matched = GetMatchedFontFamilyName(searchText, out var matchedFontFamily, out var matchedName);
+                if (!matched)
+                    return;
+
+                _isSelectingFromSearch = true;
+                try
                 {
-                    _isUpdatingSearchText = true;
-                    FontSearchTextBox.Text = matchedName;
-                    FontSearchTextBox.SelectionStart = searchText.Length;
-                    FontSearchTextBox.SelectionEnd = matchedName.Length;
-                    _isUpdatingSearchText = false;
+                    ViewModel.SelectedFontFamily = matchedFontFamily;
+
+                    if (ShouldApplyAutoCompletion(searchText, matchedName))
+                    {
+                        _isUpdatingSearchText = true;
+                        try
+                        {
+                            FontSearchTextBox.Text += matchedName[searchText.Length..];
+                            FontSearchTextBox.SelectionStart = searchText.Length;
+                            FontSearchTextBox.SelectionEnd = matchedName.Length;
+                        }
+                        finally
+                        {
+                            _isUpdatingSearchText = false;
+                        }
+                    }
                 }
+                finally
+                {
+                    _isSelectingFromSearch = false;
+                }
+
+                FontFamilyListBox.ScrollIntoView(matchedFontFamily);
             }
             finally
             {
-                _isSelectingFromSearch = false;
+                CaptureSearchTextState();
             }
-
-            FontFamilyListBox.ScrollIntoView(matchedFontFamily);
         }
 
         private bool GetMatchedFontFamilyName(string searchText, out FontFamily matchedFontFamily, out string matchedName)
@@ -214,6 +252,7 @@ namespace ALampy.XamlFontPicker.Avalonia
         protected override void OnClosed(EventArgs e)
         {
             ViewModel.PropertyChanged -= ViewModel_PropertyChanged;
+            FontSearchTextBox.PropertyChanged -= FontSearchTextBox_PropertyChanged;
             base.OnClosed(e);
         }
     }
