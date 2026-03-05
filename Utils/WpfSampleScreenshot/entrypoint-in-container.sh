@@ -58,4 +58,3 @@ fi
 sleep 5
 
 import -display "$DISPLAY" -window root "$OUTPUT_DIR/full-screen.png"
-
