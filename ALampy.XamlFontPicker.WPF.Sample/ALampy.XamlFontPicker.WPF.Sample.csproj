@@ -6,6 +6,7 @@
     <UseWPF>true</UseWPF>
     <AssemblyName>ALampy.XamlFontPicker.WPF.Sample</AssemblyName>
     <RootNamespace>ALampy.XamlFontPicker.WPF.Sample</RootNamespace>
+    <EnableWindowsTargeting>true</EnableWindowsTargeting>
   </PropertyGroup>
 
   <ItemGroup>

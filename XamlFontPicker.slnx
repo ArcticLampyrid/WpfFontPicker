@@ -1,0 +1,11 @@
+<Solution>
+  <Configurations>
+    <Platform Name="Any CPU" />
+    <Platform Name="x64" />
+    <Platform Name="x86" />
+  </Configurations>
+  <Project Path="ALampy.XamlFontPicker.Avalonia.Sample/ALampy.XamlFontPicker.Avalonia.Sample.csproj" />
+  <Project Path="ALampy.XamlFontPicker.Avalonia/ALampy.XamlFontPicker.Avalonia.csproj" />
+  <Project Path="ALampy.XamlFontPicker.WPF.Sample/ALampy.XamlFontPicker.WPF.Sample.csproj" />
+  <Project Path="ALampy.XamlFontPicker.WPF/ALampy.XamlFontPicker.WPF.csproj" />
+</Solution>

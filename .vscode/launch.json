@@ -1,0 +1,16 @@
+{
+    "configurations": [
+        {
+            "name": "C#: ALampy.XamlFontPicker.Avalonia.Sample Debug",
+            "type": "dotnet",
+            "request": "launch",
+            "projectPath": "${workspaceFolder}/ALampy.XamlFontPicker.Avalonia.Sample/ALampy.XamlFontPicker.Avalonia.Sample.csproj"
+        },
+        {
+            "name": "C#: ALampy.XamlFontPicker.WPF.Sample Debug",
+            "type": "dotnet",
+            "request": "launch",
+            "projectPath": "${workspaceFolder}/ALampy.XamlFontPicker.WPF.Sample/ALampy.XamlFontPicker.WPF.Sample.csproj"
+        }
+    ]
+}

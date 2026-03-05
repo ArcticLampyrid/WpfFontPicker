@@ -17,6 +17,7 @@
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageTags>WPF;Font;FontDialog;FontPicker</PackageTags>
     <PackageDescription>A library providing common FontPicker(Control) and FontDialog for WPF application.</PackageDescription>
+    <EnableWindowsTargeting>true</EnableWindowsTargeting>
   </PropertyGroup>
 
   <ItemGroup Condition="'$(TargetFramework)'=='net40'">
