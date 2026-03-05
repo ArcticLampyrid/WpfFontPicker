@@ -1,11 +1,11 @@
-using System;
-using System.Collections.Generic;
 using System.Globalization;
+using System.Runtime.Serialization;
 using Avalonia.Media;
 
 namespace ALampy.XamlFontPicker.Avalonia
 {
-    public class PickedFontInfo : IEquatable<PickedFontInfo>
+    [Serializable]
+    public class PickedFontInfo : IEquatable<PickedFontInfo>, ISerializable
     {
         public FontFamily Family { get; }
         public FontStretch Stretch { get; }
@@ -60,6 +60,38 @@ namespace ALampy.XamlFontPicker.Avalonia
             hashCode = hashCode * -1521134295 + Weight.GetHashCode();
             hashCode = hashCode * -1521134295 + Size.GetHashCode();
             return hashCode;
+        }
+
+        public void GetObjectData(SerializationInfo info, StreamingContext context)
+        {
+            if (info == null)
+                throw new ArgumentNullException(nameof(info));
+
+            info.AddValue(nameof(Family), Family.Name, typeof(string));
+            info.AddValue(nameof(Stretch), Stretch.ToString(), typeof(string));
+            info.AddValue(nameof(Style), Style.ToString(), typeof(string));
+            info.AddValue(nameof(Weight), Weight.ToString(), typeof(string));
+            info.AddValue(nameof(Size), Size);
+        }
+
+        protected PickedFontInfo(SerializationInfo info, StreamingContext context)
+        {
+            if (info == null)
+                throw new ArgumentNullException(nameof(info));
+
+            var familyName = info.GetString(nameof(Family)) ?? string.Empty;
+            this.Family = string.IsNullOrEmpty(familyName) ? FontFamily.Default : new FontFamily(familyName);
+
+            var stretchStr = info.GetString(nameof(Stretch)) ?? FontStretch.Normal.ToString();
+            this.Stretch = Enum.Parse<FontStretch>(stretchStr);
+
+            var styleStr = info.GetString(nameof(Style)) ?? FontStyle.Normal.ToString();
+            this.Style = Enum.Parse<FontStyle>(styleStr);
+
+            var weightStr = info.GetString(nameof(Weight)) ?? FontWeight.Normal.ToString();
+            this.Weight = Enum.Parse<FontWeight>(weightStr);
+
+            Size = info.GetDouble(nameof(Size));
         }
 
         public static bool operator ==(PickedFontInfo? left, PickedFontInfo? right)
