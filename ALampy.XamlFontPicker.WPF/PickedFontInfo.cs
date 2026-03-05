@@ -6,11 +6,18 @@ using System.Globalization;
 using System.Runtime.Serialization;
 using System.Windows;
 using System.Windows.Media;
+#if !NET40
+using System.Text.Json;
+using System.Text.Json.Serialization;
+#endif
 
 namespace ALampy.XamlFontPicker.WPF
 {
     [Serializable]
     [SettingsSerializeAs(SettingsSerializeAs.Binary)]
+#if !NET40
+    [JsonConverter(typeof(PickedFontInfoJsonConverter))]
+#endif
     public class PickedFontInfo : IEquatable<PickedFontInfo>, ISerializable
     {
         public FontFamily Family { get; }
@@ -39,6 +46,25 @@ namespace ALampy.XamlFontPicker.WPF
             this.Weight = weight;
             this.Size = size;
         }
+
+#if !NET40
+        public string ToJson(JsonSerializerOptions options = null)
+        {
+            return JsonSerializer.Serialize(this, options);
+        }
+
+        public static PickedFontInfo FromJson(string json, JsonSerializerOptions options = null)
+        {
+            if (json == null)
+                throw new ArgumentNullException(nameof(json));
+
+            var result = JsonSerializer.Deserialize<PickedFontInfo>(json, options);
+            if (result == null)
+                throw new JsonException("Failed to deserialize PickedFontInfo.");
+
+            return result;
+        }
+#endif
 
         public void GetObjectData(SerializationInfo info, StreamingContext context)
         {

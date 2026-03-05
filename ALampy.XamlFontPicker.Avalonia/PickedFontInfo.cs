@@ -1,10 +1,13 @@
 using System.Globalization;
 using System.Runtime.Serialization;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 using Avalonia.Media;
 
 namespace ALampy.XamlFontPicker.Avalonia
 {
     [Serializable]
+    [JsonConverter(typeof(PickedFontInfoJsonConverter))]
     public class PickedFontInfo : IEquatable<PickedFontInfo>, ISerializable
     {
         public FontFamily Family { get; }
@@ -28,6 +31,23 @@ namespace ALampy.XamlFontPicker.Avalonia
             this.Style = style;
             this.Weight = weight;
             this.Size = size;
+        }
+
+        public string ToJson(JsonSerializerOptions? options = null)
+        {
+            return JsonSerializer.Serialize(this, options);
+        }
+
+        public static PickedFontInfo FromJson(string json, JsonSerializerOptions? options = null)
+        {
+            if (json == null)
+                throw new ArgumentNullException(nameof(json));
+
+            var result = JsonSerializer.Deserialize<PickedFontInfo>(json, options);
+            if (result == null)
+                throw new JsonException("Failed to deserialize PickedFontInfo.");
+
+            return result;
         }
 
         public override string ToString()
