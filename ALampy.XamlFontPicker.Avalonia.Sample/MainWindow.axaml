@@ -2,6 +2,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:fp="using:ALampy.XamlFontPicker.Avalonia"
         x:Class="ALampy.XamlFontPicker.AvaloniaSample.MainWindow"
         mc:Ignorable="d"
         Title="Avalonia Sample - FontPicker"
@@ -9,7 +10,7 @@
         Height="450">
   <StackPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center" Spacing="20">
     <TextBlock Text="Avalonia FontPicker Sample" FontSize="24" />
-    <Button x:Name="OpenFontDialogButton" Content="Open Font Dialog" HorizontalAlignment="Center" />
+    <fp:FontPicker x:Name="FontPicker1" Width="400" />
     <TextBlock x:Name="ResultTextBlock" Text="No font selected" FontSize="16" />
   </StackPanel>
 </Window>

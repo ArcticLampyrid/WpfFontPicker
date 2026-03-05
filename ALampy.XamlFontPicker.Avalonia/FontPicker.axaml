@@ -1,0 +1,28 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="using:ALampy.XamlFontPicker.Avalonia"
+             x:Class="ALampy.XamlFontPicker.Avalonia.FontPicker"
+             x:DataType="vm:FontPicker"
+             mc:Ignorable="d"
+             d:DesignHeight="40"
+             d:DesignWidth="400"
+             BorderThickness="1">
+  <DockPanel>
+    <Button x:Name="SetFontButton"
+            DockPanel.Dock="Right"
+            Click="SetFontButton_Click"
+            Background="Transparent"
+            BorderThickness="0"
+            Padding="8"
+            Content="⚙" />
+
+    <Border Background="Transparent" Padding="8,4">
+      <TextBlock VerticalAlignment="Center"
+                 FontFamily="{Binding SelectedFontInfo.Family}"
+                 FontSize="{Binding SelectedFontInfo.Size}"
+                 Text="{Binding SelectedFontInfo}" />
+    </Border>
+  </DockPanel>
+</UserControl>

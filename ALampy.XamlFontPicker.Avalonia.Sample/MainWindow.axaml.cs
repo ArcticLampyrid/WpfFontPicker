@@ -1,12 +1,12 @@
+using System;
 using Avalonia.Controls;
-using Avalonia.Interactivity;
 using ALampy.XamlFontPicker.Avalonia;
 
 namespace ALampy.XamlFontPicker.AvaloniaSample
 {
     public partial class MainWindow : Window
     {
-        private Button? _openFontDialogButton;
+        private FontPicker? _fontPicker;
         private TextBlock? _resultTextBlock;
 
         public MainWindow()
@@ -18,22 +18,26 @@ namespace ALampy.XamlFontPicker.AvaloniaSample
 
         private void MainWindow_Opened(object? sender, EventArgs e)
         {
-            _openFontDialogButton = this.FindControl<Button>("OpenFontDialogButton");
+            _fontPicker = this.FindControl<FontPicker>("FontPicker1");
             _resultTextBlock = this.FindControl<TextBlock>("ResultTextBlock");
 
-            if (_openFontDialogButton != null)
-                _openFontDialogButton.Click += OpenFontDialogButton_Click;
+            if (_fontPicker != null)
+            {
+                UpdateResultText();
+                _fontPicker.PropertyChanged += (s, args) =>
+                {
+                    if (args.Property.Name == nameof(FontPicker.SelectedFontInfo))
+                        UpdateResultText();
+                };
+            }
         }
 
-        private async void OpenFontDialogButton_Click(object? sender, RoutedEventArgs e)
+        private void UpdateResultText()
         {
-            var dialog = new FontDialog();
-            var result = await dialog.ShowDialog<bool>(this);
-            if (result && _resultTextBlock != null)
-            {
-                var fontInfo = dialog.SelectedFontInfo;
-                _resultTextBlock.Text = fontInfo?.ToString() ?? "No font selected";
-            }
+            if (_resultTextBlock == null || _fontPicker == null)
+                return;
+
+            _resultTextBlock.Text = _fontPicker.SelectedFontInfo?.ToString() ?? "No font selected";
         }
     }
 }
