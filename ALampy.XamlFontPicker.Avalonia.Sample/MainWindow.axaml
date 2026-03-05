@@ -8,8 +8,8 @@
         Title="MainWindow"
         Width="800"
         Height="450">
-  <StackPanel Orientation="Vertical">
-    <Button x:Name="OpenFontDialogButton" Click="OpenFontDialogButton_Click">OpenFontDialog</Button>
+  <StackPanel Orientation="Vertical" Margin="5" Spacing="5">
+    <Button x:Name="OpenFontDialogButton" Click="OpenFontDialogButton_Click" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch">OpenFontDialog</Button>
     <fp:FontPicker x:Name="FontPicker1"/>
   </StackPanel>
 </Window>

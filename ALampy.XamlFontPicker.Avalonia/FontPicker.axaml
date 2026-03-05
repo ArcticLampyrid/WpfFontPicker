@@ -8,7 +8,8 @@
              d:DesignHeight="40"
              d:DesignWidth="400"
              BorderThickness="1"
-             BorderBrush="{DynamicResource TextControlBorderBrush}">
+             BorderBrush="{DynamicResource TextControlBorderBrush}"
+             CornerRadius="{DynamicResource ControlCornerRadius}">
   <DockPanel>
     <Button x:Name="SetFontButton"
             DockPanel.Dock="Right"
