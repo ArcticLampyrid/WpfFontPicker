@@ -4,12 +4,20 @@
 - WPF: [![NuGet](https://img.shields.io/nuget/v/ALampy.XamlFontPicker.WPF.svg)](https://www.nuget.org/packages/ALampy.XamlFontPicker.WPF)   
   Namespace: `ALampy.XamlFontPicker.WPF`(CLR) or `xmlns:fp="https://github.com/ArcticLampyrid/XamlFontPicker"` (XAML)
 
-- Avalonia 11: Coming soon
+- Avalonia: [![NuGet](https://img.shields.io/nuget/v/ALampy.XamlFontPicker.Avalonia.svg)](https://www.nuget.org/packages/ALampy.XamlFontPicker.Avalonia)  
   Namespace: `ALampy.XamlFontPicker.Avalonia` (CLR) or `xmlns:fp="using:ALampy.XamlFontPicker.Avalonia"` (XAML)
 
+> [!NOTE]
+> This project is co-maintained by **萤火 (ALampy)** and AI companion **小雪 (Koyuki)**. ❄️
+
 ## Install
+### WPF
 - Package Manager `Install-Package ALampy.XamlFontPicker.WPF`  
 - .NET CLI `dotnet add package ALampy.XamlFontPicker.WPF`  
+
+### Avalonia
+- Package Manager `Install-Package ALampy.XamlFontPicker.Avalonia`  
+- .NET CLI `dotnet add package ALampy.XamlFontPicker.Avalonia`  
 
 ## Usage (WPF)
 - See `ALampy.XamlFontPicker.WPF.Sample`

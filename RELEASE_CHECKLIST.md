@@ -1,55 +1,126 @@
-# Release Checklist
+# Release Checklist (Universal · WPF + Avalonia)
 
-## Pre-Release Checklist
+Use this checklist for every release of `XamlFontPicker`.
 
-### Code Quality
-- [ ] All Avalonia projects build without errors (`dotnet build -c Release`)
-- [ ] No new warnings introduced
-- [ ] Code follows existing style conventions
+Projects in scope:
+- `ALampy.XamlFontPicker.WPF`
+- `ALampy.XamlFontPicker.WPF.Sample`
+- `ALampy.XamlFontPicker.Avalonia`
+- `ALampy.XamlFontPicker.Avalonia.Sample`
 
-### Testing
-- [ ] Sample app runs and displays FontPicker correctly
-- [ ] FontDialog opens and allows font selection
-- [ ] Selected font info is returned correctly
-- [ ] OK/Cancel buttons work as expected
+---
 
-### API Surface
-- [ ] `PickedFontInfo` model is stable
-- [ ] `FontDialogViewModel` properties are correct
-- [ ] `FontDialog` opens and returns results
-- [ ] `FontPicker` control with `SelectedFontInfo` property works
+## 1) Pre-flight
 
-### Localization
-- [ ] English strings in `Resources/Strings.axaml`
-- [ ] Chinese strings in `Resources/Strings.zh-CN.axaml`
-- [ ] Resource keys match WPF version
+- [ ] Working tree is clean (`git status`)
+- [ ] Branch is correct (`v2.x` or release branch)
+- [ ] `origin` is `https://github.com/ArcticLampyrid/XamlFontPicker`
+- [ ] Release version decided (SemVer)
+- [ ] Changelog/release note draft prepared
 
-### Packaging (NuGet)
-- [ ] Package version is updated in `.csproj`
-- [ ] Package description is accurate
-- [ ] Dependencies are correct (Avalonia 11.x)
-- [ ] Target framework is appropriate (net8.0 recommended)
+---
 
-### Documentation
-- [ ] README.md updated with Avalonia usage
-- [ ] API usage examples are correct
+## 2) Build validation
 
-### Repository
-- [ ] Changes are committed locally
-- [ ] No unintended changes to WPF project
-- [ ] Solution builds (Avalonia projects only on non-Windows)
+- [ ] `dotnet build XamlFontPicker.sln -c Release /p:EnableWindowsTargeting=true`
+- [ ] No build errors
+- [ ] Warnings reviewed (legacy TFM warnings acknowledged if expected)
 
-## Release Commands
+Optional per-project checks:
+- [ ] `dotnet build ALampy.XamlFontPicker.WPF/ALampy.XamlFontPicker.WPF.csproj -c Release`
+- [ ] `dotnet build ALampy.XamlFontPicker.Avalonia/ALampy.XamlFontPicker.Avalonia.csproj -c Release`
+
+---
+
+## 3) Runtime smoke tests
+
+### WPF
+- [ ] WPF sample launches
+- [ ] Font dialog open/select/OK/Cancel works
+- [ ] `FontPicker` value updates correctly
+- [ ] Screenshot utility passes: `./Utils/WpfSampleScreenshot/run.sh`
+
+### Avalonia
+- [ ] Avalonia sample launches
+- [ ] Font dialog open/select/OK/Cancel works
+- [ ] Search behavior works (match/no-match/autocomplete constraints)
+- [ ] Typeface list is based on actual supported family typefaces
+- [ ] Screenshot utility passes: `./Utils/AvaloniaSampleScreenshot/run.sh`
+
+---
+
+## 4) API & behavior compatibility
+
+- [ ] Public API remains stable (`PickedFontInfo`, `FontPicker`, `FontDialog`)
+- [ ] `SelectedFontInfo` round-trip behaves as expected
+- [ ] WPF and Avalonia behaviors are aligned where intended
+- [ ] Default font fallback behavior remains valid
+
+---
+
+## 5) Localization consistency
+
+- [ ] WPF resources valid:
+  - `ALampy.XamlFontPicker.WPF/Resources/Strings.resx`
+  - `ALampy.XamlFontPicker.WPF/Resources/Strings.zh-CN.resx`
+- [ ] Avalonia resources valid:
+  - `ALampy.XamlFontPicker.Avalonia/Resources/Strings.resx`
+  - `ALampy.XamlFontPicker.Avalonia/Resources/Strings.zh-CN.resx`
+- [ ] Keys are aligned between WPF and Avalonia
+- [ ] UI strings display correctly for target cultures
+
+---
+
+## 6) Packaging metadata check
+
+### WPF package
+- [ ] `PackageId`: `ALampy.XamlFontPicker.WPF`
+- [ ] `RepositoryUrl` points to `XamlFontPicker`
+- [ ] `PackageDescription/Tags/License` reviewed
+
+### Avalonia package
+- [ ] `PackageId`: `ALampy.XamlFontPicker.Avalonia`
+- [ ] `RepositoryUrl` points to `XamlFontPicker`
+- [ ] `PackageDescription/Tags/License` reviewed
+
+---
+
+## 7) Pack artifacts
+
+- [ ] `dotnet pack ALampy.XamlFontPicker.WPF/ALampy.XamlFontPicker.WPF.csproj -c Release`
+- [ ] `dotnet pack ALampy.XamlFontPicker.Avalonia/ALampy.XamlFontPicker.Avalonia.csproj -c Release`
+- [ ] Inspect generated `.nupkg` and `.snupkg`
+
+---
+
+## 8) Documentation sync
+
+- [ ] `README.md` reflects latest release status for both WPF and Avalonia
+- [ ] Namespace examples are correct
+- [ ] NuGet links/badges are correct
+- [ ] Release notes include notable changes for both stacks
+
+---
+
+## 9) Publish & finalize
+
+- [ ] Commit release-related changes
+- [ ] Tag release (`git tag vX.Y.Z`)
+- [ ] Push branch and tags
+- [ ] Publish NuGet packages
+- [ ] Create GitHub Release
+
+---
+
+## Useful commands
 
 ```bash
-# Build for release
-dotnet build -c Release
+cd /home/alampy/sources/XamlFontPicker
 
-# Pack NuGet package
-dotnet pack -c Release
+# Build
+DOTNET_CLI_TELEMETRY_OPTOUT=1 dotnet build XamlFontPicker.sln -c Release /p:EnableWindowsTargeting=true
+
+# Pack
+dotnet pack ALampy.XamlFontPicker.WPF/ALampy.XamlFontPicker.WPF.csproj -c Release
+dotnet pack ALampy.XamlFontPicker.Avalonia/ALampy.XamlFontPicker.Avalonia.csproj -c Release
 ```
-
-## Post-Release
-- [ ] Tag version in git
-- [ ] Push to NuGet.org
-- [ ] Update release notes
