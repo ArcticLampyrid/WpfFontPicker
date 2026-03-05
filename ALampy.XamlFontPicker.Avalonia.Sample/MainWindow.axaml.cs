@@ -6,11 +6,17 @@ namespace ALampy.XamlFontPicker.AvaloniaSample
 {
     public partial class MainWindow : Window
     {
+        private readonly bool _openDialogOnStartup;
         private FontPicker? _fontPicker;
         private TextBlock? _resultTextBlock;
 
-        public MainWindow()
+        public MainWindow() : this(false)
         {
+        }
+
+        public MainWindow(bool openDialogOnStartup)
+        {
+            _openDialogOnStartup = openDialogOnStartup;
             InitializeComponent();
 
             Opened += MainWindow_Opened;
@@ -29,6 +35,9 @@ namespace ALampy.XamlFontPicker.AvaloniaSample
                     if (args.Property.Name == nameof(FontPicker.SelectedFontInfo))
                         UpdateResultText();
                 };
+
+                if (_openDialogOnStartup)
+                    _ = _fontPicker.OpenFontDialog(this);
             }
         }
 

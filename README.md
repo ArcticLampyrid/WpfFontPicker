@@ -65,3 +65,10 @@ A utility for taking screenshots of WPF samples, which can be used in quick prev
 ```bash
 ./Utils/WpfSampleScreenshot/run.sh
 ```
+
+#### AvaloniaSampleScreenshot
+A utility for taking screenshots of Avalonia samples in Docker on Arch Linux. It uses headless X11 (`Xvfb`) + a lightweight WM (`herbstluftwm`) and multi-stage image build, aligned with the WPF screenshot pipeline but without Wine.
+
+```bash
+./Utils/AvaloniaSampleScreenshot/run.sh
+```
