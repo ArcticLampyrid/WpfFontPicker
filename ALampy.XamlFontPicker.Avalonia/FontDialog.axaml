@@ -25,6 +25,7 @@
                  Margin="0,0,0,8"
                  FontSize="14"
                  Watermark="Search fonts..."
+                 TextChanging="FontSearchTextBox_TextChanging"
                  TextChanged="FontSearchTextBox_TextChanged" />
         <ListBox x:Name="FontFamilyListBox"
                  SelectedItem="{Binding SelectedFontFamily}"

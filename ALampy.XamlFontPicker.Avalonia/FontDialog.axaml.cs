@@ -37,6 +37,9 @@ namespace ALampy.XamlFontPicker.Avalonia
 
         private bool _isUpdatingSearchText;
         private bool _isSelectingFromSearch;
+        private string _searchTextBeforeChanging = string.Empty;
+        private int _selectionStartBeforeChanging;
+        private int _selectionEndBeforeChanging;
 
         public FontDialog()
         {
@@ -62,6 +65,16 @@ namespace ALampy.XamlFontPicker.Avalonia
             SyncSearchTextWithCurrentSelection();
         }
 
+        private void FontSearchTextBox_TextChanging(object? sender, TextChangingEventArgs e)
+        {
+            if (_isUpdatingSearchText)
+                return;
+
+            _searchTextBeforeChanging = FontSearchTextBox.Text ?? string.Empty;
+            _selectionStartBeforeChanging = FontSearchTextBox.SelectionStart;
+            _selectionEndBeforeChanging = FontSearchTextBox.SelectionEnd;
+        }
+
         private void FontSearchTextBox_TextChanged(object? sender, TextChangedEventArgs e)
         {
             if (_isUpdatingSearchText)
@@ -71,21 +84,16 @@ namespace ALampy.XamlFontPicker.Avalonia
             if (string.IsNullOrWhiteSpace(searchText))
                 return;
 
-            var current = ViewModel.SelectedFontFamily;
-            var match = GetMatchedFontFamily(searchText, current, out var matchedName);
-            if (match == null)
-                return;
-
-            if (ReferenceEquals(current, match))
+            var matched = GetMatchedFontFamilyName(searchText, out var matchedFontFamily, out var matchedName);
+            if (!matched)
                 return;
 
             _isSelectingFromSearch = true;
             try
             {
-                ViewModel.SelectedFontFamily = match;
+                ViewModel.SelectedFontFamily = matchedFontFamily;
 
-                var caretIndex = FontSearchTextBox.CaretIndex;
-                if (caretIndex == searchText.Length && matchedName.Length > searchText.Length)
+                if (ShouldApplyAutoCompletion(searchText, matchedName))
                 {
                     _isUpdatingSearchText = true;
                     FontSearchTextBox.Text = matchedName;
@@ -99,36 +107,54 @@ namespace ALampy.XamlFontPicker.Avalonia
                 _isSelectingFromSearch = false;
             }
 
-            FontFamilyListBox.ScrollIntoView(match);
+            FontFamilyListBox.ScrollIntoView(matchedFontFamily);
         }
 
-        private FontFamily? GetMatchedFontFamily(string searchText, FontFamily? currentFontFamily, out string matchedName)
+        private bool GetMatchedFontFamilyName(string searchText, out FontFamily matchedFontFamily, out string matchedName)
         {
-            if (currentFontFamily != null && IsFontFamilyMatch(currentFontFamily, searchText))
-            {
-                matchedName = currentFontFamily.Name ?? string.Empty;
-                return currentFontFamily;
-            }
-
             foreach (var fontFamily in ViewModel.FontFamilies)
             {
-                if (ReferenceEquals(fontFamily, currentFontFamily))
+                if (IsFontFamilyMatch(fontFamily, searchText) != true)
                     continue;
 
-                if (!IsFontFamilyMatch(fontFamily, searchText))
-                    continue;
-
+                matchedFontFamily = fontFamily;
                 matchedName = fontFamily.Name ?? string.Empty;
-                return fontFamily;
+                return true;
             }
 
+            matchedFontFamily = FontFamily.Default;
             matchedName = string.Empty;
-            return null;
+            return false;
         }
 
         private static bool IsFontFamilyMatch(FontFamily fontFamily, string searchText)
         {
             return fontFamily.Name?.StartsWith(searchText, StringComparison.CurrentCultureIgnoreCase) == true;
+        }
+
+        private bool ShouldApplyAutoCompletion(string searchText, string matchedName)
+        {
+            if (matchedName.Length <= searchText.Length)
+                return false;
+
+            var beforeText = _searchTextBeforeChanging;
+            var selectionStart = _selectionStartBeforeChanging;
+            var selectionEnd = _selectionEndBeforeChanging;
+
+            var appendedAtTail = selectionStart == beforeText.Length
+                && selectionEnd == beforeText.Length
+                && searchText.StartsWith(beforeText, StringComparison.CurrentCulture)
+                && searchText.Length > beforeText.Length;
+
+            if (appendedAtTail)
+                return true;
+
+            var replacedSelectedTail = selectionStart < selectionEnd
+                && selectionEnd == beforeText.Length
+                && searchText.StartsWith(beforeText.Substring(0, selectionStart), StringComparison.CurrentCulture)
+                && searchText.Length > selectionStart;
+
+            return replacedSelectedTail;
         }
 
         private void SyncSearchTextWithCurrentSelection()
