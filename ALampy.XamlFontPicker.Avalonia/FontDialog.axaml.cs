@@ -26,8 +26,10 @@ namespace ALampy.XamlFontPicker.Avalonia
                     return;
 
                 ViewModel.SelectedFontFamily = actualFontFamily;
-                ViewModel.SelectedTypeface = ViewModel.FamilyTypefaces
-                    .FirstOrDefault(x => x.Stretch == value.Stretch && x.Style == value.Style && x.Weight == value.Weight);
+                ViewModel.SelectedTypefaceItem = ViewModel.FamilyTypefaces
+                    .FirstOrDefault(x => x.Typeface.Stretch == value.Stretch
+                                         && x.Typeface.Style == value.Style
+                                         && x.Typeface.Weight == value.Weight);
             }
         }
 
@@ -35,9 +37,6 @@ namespace ALampy.XamlFontPicker.Avalonia
 
         private bool _isUpdatingSearchText;
         private bool _isSelectingFromSearch;
-
-        private TextBox FontSearchTextBoxControl => this.FindControl<TextBox>("FontSearchTextBox")!;
-        private ListBox FontFamilyListBoxControl => this.FindControl<ListBox>("FontFamilyListBox")!;
 
         public FontDialog()
         {
@@ -68,36 +67,68 @@ namespace ALampy.XamlFontPicker.Avalonia
             if (_isUpdatingSearchText)
                 return;
 
-            var searchText = FontSearchTextBoxControl.Text;
+            var searchText = FontSearchTextBox.Text;
             if (string.IsNullOrWhiteSpace(searchText))
                 return;
 
             var current = ViewModel.SelectedFontFamily;
-            if (current != null && IsFontFamilyMatch(current, searchText))
+            var match = GetMatchedFontFamily(searchText, current, out var matchedName);
+            if (match == null)
                 return;
 
-            var match = ViewModel.FontFamilies
-                .FirstOrDefault(fontFamily => !ReferenceEquals(fontFamily, current) && IsFontFamilyMatch(fontFamily, searchText));
-
-            if (match == null)
+            if (ReferenceEquals(current, match))
                 return;
 
             _isSelectingFromSearch = true;
             try
             {
                 ViewModel.SelectedFontFamily = match;
+
+                var caretIndex = FontSearchTextBox.CaretIndex;
+                if (caretIndex == searchText.Length && matchedName.Length > searchText.Length)
+                {
+                    _isUpdatingSearchText = true;
+                    FontSearchTextBox.Text = matchedName;
+                    FontSearchTextBox.SelectionStart = searchText.Length;
+                    FontSearchTextBox.SelectionEnd = matchedName.Length;
+                    _isUpdatingSearchText = false;
+                }
             }
             finally
             {
                 _isSelectingFromSearch = false;
             }
 
-            FontFamilyListBoxControl.ScrollIntoView(match);
+            FontFamilyListBox.ScrollIntoView(match);
+        }
+
+        private FontFamily? GetMatchedFontFamily(string searchText, FontFamily? currentFontFamily, out string matchedName)
+        {
+            if (currentFontFamily != null && IsFontFamilyMatch(currentFontFamily, searchText))
+            {
+                matchedName = currentFontFamily.Name ?? string.Empty;
+                return currentFontFamily;
+            }
+
+            foreach (var fontFamily in ViewModel.FontFamilies)
+            {
+                if (ReferenceEquals(fontFamily, currentFontFamily))
+                    continue;
+
+                if (!IsFontFamilyMatch(fontFamily, searchText))
+                    continue;
+
+                matchedName = fontFamily.Name ?? string.Empty;
+                return fontFamily;
+            }
+
+            matchedName = string.Empty;
+            return null;
         }
 
         private static bool IsFontFamilyMatch(FontFamily fontFamily, string searchText)
         {
-            return fontFamily.Name?.IndexOf(searchText, StringComparison.CurrentCultureIgnoreCase) >= 0;
+            return fontFamily.Name?.StartsWith(searchText, StringComparison.CurrentCultureIgnoreCase) == true;
         }
 
         private void SyncSearchTextWithCurrentSelection()
@@ -107,13 +138,13 @@ namespace ALampy.XamlFontPicker.Avalonia
                 return;
 
             var fullName = selectedFontFamily.Name ?? string.Empty;
-            if (string.Equals(FontSearchTextBoxControl.Text, fullName, StringComparison.CurrentCulture))
+            if (string.Equals(FontSearchTextBox.Text, fullName, StringComparison.CurrentCulture))
                 return;
 
             _isUpdatingSearchText = true;
             try
             {
-                FontSearchTextBoxControl.Text = fullName;
+                FontSearchTextBox.Text = fullName;
             }
             finally
             {
@@ -127,7 +158,7 @@ namespace ALampy.XamlFontPicker.Avalonia
             if (selectedFontFamily == null)
                 return;
 
-            FontFamilyListBoxControl.ScrollIntoView(selectedFontFamily);
+            FontFamilyListBox.ScrollIntoView(selectedFontFamily);
         }
 
         private void OkButton_Click(object? sender, RoutedEventArgs e)

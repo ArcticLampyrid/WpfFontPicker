@@ -5,12 +5,11 @@
         xmlns:fp="using:ALampy.XamlFontPicker.Avalonia"
         x:Class="ALampy.XamlFontPicker.AvaloniaSample.MainWindow"
         mc:Ignorable="d"
-        Title="Avalonia Sample - FontPicker"
+        Title="MainWindow"
         Width="800"
         Height="450">
-  <StackPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center" Spacing="20">
-    <TextBlock Text="Avalonia FontPicker Sample" FontSize="24" />
-    <fp:FontPicker x:Name="FontPicker1" Width="400" />
-    <TextBlock x:Name="ResultTextBlock" Text="No font selected" FontSize="16" />
+  <StackPanel Orientation="Vertical">
+    <Button x:Name="OpenFontDialogButton" Click="OpenFontDialogButton_Click">OpenFontDialog</Button>
+    <fp:FontPicker x:Name="FontPicker1"/>
   </StackPanel>
 </Window>

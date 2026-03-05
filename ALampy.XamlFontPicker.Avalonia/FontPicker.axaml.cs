@@ -1,6 +1,7 @@
 using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Interactivity;
 
 namespace ALampy.XamlFontPicker.Avalonia
@@ -29,7 +30,13 @@ namespace ALampy.XamlFontPicker.Avalonia
 
         public async Task OpenFontDialog(Window? owner = null)
         {
-            var parentWindow = owner ?? VisualRoot as Window;
+            Window? parentWindow = owner ?? VisualRoot as Window;
+
+            if (parentWindow == null && Application.Current?.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
+            {
+                parentWindow = desktop.MainWindow;
+            }
+
             if (parentWindow == null)
                 return;
 

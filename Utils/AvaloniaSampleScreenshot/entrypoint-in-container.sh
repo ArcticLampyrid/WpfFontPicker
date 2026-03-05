@@ -41,9 +41,11 @@ herbstclient set_layout grid
 dotnet /app/ALampy.XamlFontPicker.Avalonia.Sample.dll --open-dialog-on-startup >/tmp/app.log 2>&1 &
 APP_PID=$!
 
-if ! timeout 120 xdotool search --sync --name "Avalonia Sample - FontPicker" >/dev/null; then
-  echo "Warning: main window did not appear within timeout."
-  tail -n 80 /tmp/app.log || true
+if ! timeout 120 xdotool search --sync --name "MainWindow" >/dev/null; then
+  if ! timeout 10 xdotool search --sync --name "Avalonia Sample - FontPicker" >/dev/null; then
+    echo "Warning: main window did not appear within timeout."
+    tail -n 80 /tmp/app.log || true
+  fi
 fi
 
 if ! timeout 120 xdotool search --sync --name "Choose Font" >/dev/null; then

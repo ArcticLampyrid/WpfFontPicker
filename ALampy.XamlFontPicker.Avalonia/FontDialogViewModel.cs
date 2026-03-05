@@ -1,24 +1,42 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Globalization;
 using System.Linq;
 using Avalonia.Media;
 
 namespace ALampy.XamlFontPicker.Avalonia
 {
+    public class TypefaceDisplayItem
+    {
+        public Typeface Typeface { get; }
+        public string DisplayName { get; }
+
+        public TypefaceDisplayItem(Typeface typeface)
+        {
+            Typeface = typeface;
+            DisplayName = GetReadableName(typeface);
+        }
+
+        private static string GetReadableName(Typeface typeface)
+        {
+            return TypefaceDisplayNameHelper.GetDisplayName(typeface.Weight, typeface.Style, typeface.Stretch);
+        }
+
+        public override string ToString() => DisplayName;
+    }
+
     public class FontDialogViewModel : INotifyPropertyChanged
     {
         private const double PixelsPerPoint = 96.0 / 72.0;
 
         private FontFamily _selectedFontFamily;
-        private Typeface? _selectedTypeface;
+        private TypefaceDisplayItem? _selectedTypefaceItem;
         private double _fontSize;
 
         public FontDialogViewModel()
         {
             _selectedFontFamily = FontFamily.Default;
-            _selectedTypeface = null;
+            _selectedTypefaceItem = null;
             _fontSize = 12;
 
             FontFamilies = FontManager.Current.SystemFonts
@@ -39,27 +57,27 @@ namespace ALampy.XamlFontPicker.Avalonia
             {
                 _selectedFontFamily = value;
                 OnPropertyChanged(nameof(SelectedFontFamily));
-                OnPropertyChanged(nameof(SelectedFontInfo));
                 OnPropertyChanged(nameof(FamilyTypefaces));
+                OnPropertyChanged(nameof(SelectedFontInfo));
             }
         }
 
-        public IList<Typeface> FamilyTypefaces
+        public IList<TypefaceDisplayItem> FamilyTypefaces
         {
             get
             {
                 var family = SelectedFontFamily;
                 if (family == null)
-                    return Array.Empty<Typeface>();
+                    return Array.Empty<TypefaceDisplayItem>();
 
-                var typefaces = new List<Typeface>();
+                var typefaces = new List<TypefaceDisplayItem>();
                 foreach (var weight in new[] { FontWeight.Thin, FontWeight.ExtraLight, FontWeight.Light, FontWeight.Normal, FontWeight.Medium, FontWeight.SemiBold, FontWeight.Bold, FontWeight.ExtraBold, FontWeight.Black })
                 {
                     foreach (var style in new[] { FontStyle.Normal, FontStyle.Italic })
                     {
                         foreach (var stretch in new[] { FontStretch.UltraCondensed, FontStretch.ExtraCondensed, FontStretch.Condensed, FontStretch.SemiCondensed, FontStretch.Normal, FontStretch.SemiExpanded, FontStretch.Expanded, FontStretch.ExtraExpanded, FontStretch.UltraExpanded })
                         {
-                            typefaces.Add(new Typeface(family, style, weight, stretch));
+                            typefaces.Add(new TypefaceDisplayItem(new Typeface(family, style, weight, stretch)));
                         }
                     }
                 }
@@ -67,19 +85,19 @@ namespace ALampy.XamlFontPicker.Avalonia
             }
         }
 
-        public Typeface? SelectedTypeface
+        public TypefaceDisplayItem? SelectedTypefaceItem
         {
-            get => _selectedTypeface;
+            get => _selectedTypefaceItem;
             set
             {
-                _selectedTypeface = value;
+                _selectedTypefaceItem = value;
+                OnPropertyChanged(nameof(SelectedTypefaceItem));
                 OnPropertyChanged(nameof(SelectedTypeface));
-                OnPropertyChanged(nameof(SelectedFontStyle));
-                OnPropertyChanged(nameof(SelectedFontWeight));
-                OnPropertyChanged(nameof(SelectedFontStretch));
                 OnPropertyChanged(nameof(SelectedFontInfo));
             }
         }
+
+        public Typeface? SelectedTypeface => SelectedTypefaceItem?.Typeface;
 
         public FontStyle SelectedFontStyle => SelectedTypeface?.Style ?? FontStyle.Normal;
 

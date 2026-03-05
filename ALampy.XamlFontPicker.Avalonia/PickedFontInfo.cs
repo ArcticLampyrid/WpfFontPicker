@@ -15,14 +15,7 @@ namespace ALampy.XamlFontPicker.Avalonia
 
         public string FamilyName => Family?.Name ?? string.Empty;
 
-        public string TypefaceName
-        {
-            get
-            {
-                var typeface = new Typeface(Family ?? FontFamily.Default, Style, Weight, Stretch);
-                return typeface.ToString() ?? string.Empty;
-            }
-        }
+        public string TypefaceName => TypefaceDisplayNameHelper.GetDisplayName(Weight, Style, Stretch);
 
         public PickedFontInfo() : this(FontFamily.Default, FontStretch.Normal, FontStyle.Normal, FontWeight.Normal, 12)
         {
