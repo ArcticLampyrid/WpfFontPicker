@@ -114,12 +114,15 @@ namespace ALampy.XamlFontPicker.Avalonia
         {
             foreach (var fontFamily in ViewModel.FontFamilies)
             {
-                if (IsFontFamilyMatch(fontFamily, searchText) != true)
-                    continue;
+                foreach (var name in GetFontFamilySearchNames(fontFamily))
+                {
+                    if (name.StartsWith(searchText, StringComparison.CurrentCultureIgnoreCase) != true)
+                        continue;
 
-                matchedFontFamily = fontFamily;
-                matchedName = fontFamily.Name ?? string.Empty;
-                return true;
+                    matchedFontFamily = fontFamily;
+                    matchedName = name;
+                    return true;
+                }
             }
 
             matchedFontFamily = FontFamily.Default;
@@ -127,9 +130,20 @@ namespace ALampy.XamlFontPicker.Avalonia
             return false;
         }
 
-        private static bool IsFontFamilyMatch(FontFamily fontFamily, string searchText)
+        private static string[] GetFontFamilySearchNames(FontFamily fontFamily)
         {
-            return fontFamily.Name?.StartsWith(searchText, StringComparison.CurrentCultureIgnoreCase) == true;
+            var names = fontFamily.FamilyNames
+                .Where(name => !string.IsNullOrWhiteSpace(name))
+                .Distinct(StringComparer.CurrentCultureIgnoreCase)
+                .ToList();
+
+            if (!string.IsNullOrWhiteSpace(fontFamily.Name)
+                && names.All(name => !string.Equals(name, fontFamily.Name, StringComparison.CurrentCultureIgnoreCase)))
+            {
+                names.Insert(0, fontFamily.Name);
+            }
+
+            return names.ToArray();
         }
 
         private bool ShouldApplyAutoCompletion(string searchText, string matchedName)

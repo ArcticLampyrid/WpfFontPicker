@@ -20,7 +20,6 @@ namespace ALampy.XamlFontPicker.Avalonia
         public FontPicker()
         {
             InitializeComponent();
-            DataContext = this;
         }
 
         private async void SetFontButton_Click(object? sender, RoutedEventArgs e)

@@ -1,9 +1,0 @@
-<ResourceDictionary xmlns="https://github.com/avaloniaui"
-                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
-    <x:String x:Key="FontDialog_Title">Choose Font</x:String>
-    <x:String x:Key="FontDialog_Label_Family">Family</x:String>
-    <x:String x:Key="FontDialog_Label_Typeface">Typeface</x:String>
-    <x:String x:Key="FontDialog_Label_Size">Size</x:String>
-    <x:String x:Key="Common_Ok">OK</x:String>
-    <x:String x:Key="Common_Cancel">Cancel</x:String>
-</ResourceDictionary>

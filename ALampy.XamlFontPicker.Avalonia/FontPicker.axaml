@@ -2,9 +2,8 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:vm="using:ALampy.XamlFontPicker.Avalonia"
              x:Class="ALampy.XamlFontPicker.Avalonia.FontPicker"
-             x:DataType="vm:FontPicker"
+             x:Name="Root"
              mc:Ignorable="d"
              d:DesignHeight="40"
              d:DesignWidth="400"
@@ -20,9 +19,9 @@
 
     <Border Background="Transparent" Padding="8,4">
       <TextBlock VerticalAlignment="Center"
-                 FontFamily="{Binding SelectedFontInfo.Family}"
-                 FontSize="{Binding SelectedFontInfo.Size}"
-                 Text="{Binding SelectedFontInfo}" />
+                 FontFamily="{Binding SelectedFontInfo.Family, ElementName=Root}"
+                 FontSize="{Binding SelectedFontInfo.Size, ElementName=Root}"
+                 Text="{Binding SelectedFontInfo, ElementName=Root}" />
     </Border>
   </DockPanel>
 </UserControl>
