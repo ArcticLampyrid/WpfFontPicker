@@ -7,8 +7,9 @@
         Title="Avalonia Sample - FontPicker"
         Width="800"
         Height="450">
-  <StackPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center">
-    <TextBlock Text="Avalonia FontPicker Sample" FontSize="24" Margin="0,0,0,20"/>
-    <TextBlock Text="Hello from Avalonia 11!" FontSize="16"/>
+  <StackPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center" Spacing="20">
+    <TextBlock Text="Avalonia FontPicker Sample" FontSize="24" />
+    <Button x:Name="OpenFontDialogButton" Content="Open Font Dialog" HorizontalAlignment="Center" />
+    <TextBlock x:Name="ResultTextBlock" Text="No font selected" FontSize="16" />
   </StackPanel>
 </Window>

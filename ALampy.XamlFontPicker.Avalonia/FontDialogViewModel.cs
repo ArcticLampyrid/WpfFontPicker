@@ -74,9 +74,18 @@ namespace ALampy.XamlFontPicker.Avalonia
             {
                 _selectedTypeface = value;
                 OnPropertyChanged(nameof(SelectedTypeface));
+                OnPropertyChanged(nameof(SelectedFontStyle));
+                OnPropertyChanged(nameof(SelectedFontWeight));
+                OnPropertyChanged(nameof(SelectedFontStretch));
                 OnPropertyChanged(nameof(SelectedFontInfo));
             }
         }
+
+        public FontStyle SelectedFontStyle => SelectedTypeface?.Style ?? FontStyle.Normal;
+
+        public FontWeight SelectedFontWeight => SelectedTypeface?.Weight ?? FontWeight.Normal;
+
+        public FontStretch SelectedFontStretch => SelectedTypeface?.Stretch ?? FontStretch.Normal;
 
         public double FontSize
         {

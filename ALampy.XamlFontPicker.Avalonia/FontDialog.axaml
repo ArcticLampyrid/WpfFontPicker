@@ -1,0 +1,77 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:vm="using:ALampy.XamlFontPicker.Avalonia"
+        xmlns:media="using:Avalonia.Media"
+        x:Class="ALampy.XamlFontPicker.Avalonia.FontDialog"
+        x:DataType="vm:FontDialogViewModel"
+        mc:Ignorable="d"
+        Title="{Binding DialogTitle}"
+        Width="800"
+        Height="450"
+        Loaded="Window_Loaded">
+  <DockPanel>
+    <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal" HorizontalAlignment="Right" Spacing="5" Margin="5">
+      <Button x:Name="CancelButton" Content="{Binding CancelText}" MinWidth="80" Padding="10,5" Click="CancelButton_Click"/>
+      <Button x:Name="OkButton" Content="{Binding OkText}" MinWidth="80" Padding="10,5" Classes="primary" Click="OkButton_Click"/>
+    </StackPanel>
+
+    <Grid ColumnDefinitions="*,*,*" RowDefinitions="Auto,*">
+      <TextBlock Grid.Row="0" Grid.Column="0" Text="{Binding LabelFamily}" FontSize="18" Margin="0,0,8,5" />
+      <DockPanel Grid.Row="1" Grid.Column="0" Margin="0,0,8,0">
+        <TextBox x:Name="FontSearchTextBox" DockPanel.Dock="Top" Margin="0,0,0,8" FontSize="14" Watermark="Search fonts..." TextChanged="FontSearchTextBox_TextChanged" />
+        <ListBox x:Name="FontFamilyListBox"
+                 SelectedItem="{Binding SelectedFontFamily}"
+                 ItemsSource="{Binding FontFamilies}">
+          <ListBox.ItemTemplate>
+            <DataTemplate x:DataType="media:FontFamily">
+              <TextBlock Text="{Binding Name}" FontFamily="{Binding}" />
+            </DataTemplate>
+          </ListBox.ItemTemplate>
+        </ListBox>
+      </DockPanel>
+
+      <TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding LabelTypeface}" FontSize="18" Margin="0,0,8,5" />
+      <ListBox x:Name="FamilyTypefaceListBox"
+               Grid.Row="1"
+               Grid.Column="1"
+               Margin="0,0,8,0"
+               SelectedItem="{Binding SelectedTypeface}"
+               ItemsSource="{Binding FamilyTypefaces}">
+        <ListBox.ItemTemplate>
+          <DataTemplate x:DataType="media:Typeface">
+            <TextBlock Text="{Binding}" FontStyle="{Binding Style}" FontWeight="{Binding Weight}" />
+          </DataTemplate>
+        </ListBox.ItemTemplate>
+      </ListBox>
+
+      <TextBlock Grid.Row="0" Grid.Column="2" Text="{Binding LabelSize}" FontSize="18" Margin="0,0,0,5" />
+      <DockPanel Grid.Row="1" Grid.Column="2">
+        <ComboBox x:Name="FontSizeComboBox"
+                  DockPanel.Dock="Top"
+                  FontSize="18"
+                  IsEditable="True"
+                  Text="{Binding FontSizePt}"
+                  ItemsSource="{Binding FontSizeOptions}">
+          <ComboBox.ItemTemplate>
+            <DataTemplate x:DataType="vm:FontSizeOption">
+              <TextBlock Text="{Binding PointSize}" FontSize="{Binding PixelSize}" />
+            </DataTemplate>
+          </ComboBox.ItemTemplate>
+        </ComboBox>
+
+        <TextBlock x:Name="PreviewTextBlock"
+                   FontFamily="{Binding SelectedFontFamily}"
+                   FontStyle="{Binding SelectedFontStyle}"
+                   FontWeight="{Binding SelectedFontWeight}"
+                   FontStretch="{Binding SelectedFontStretch}"
+                   FontSize="{Binding FontSize}"
+                   TextWrapping="Wrap"
+                   TextAlignment="Center"
+                   VerticalAlignment="Center"
+                   Text="{Binding SelectedFontFamily.Name}" />
+      </DockPanel>
+    </Grid>
+  </DockPanel>
+</Window>
