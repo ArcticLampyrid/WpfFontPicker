@@ -10,5 +10,5 @@ using System.Windows.Markup;
                                               // app, or any theme specific resource dictionaries)
 )]
 
-[assembly: XmlnsDefinition("https://github.com/ArcticLampyrid/WpfFontPicker", "ALampy.XamlFontPicker.WPF")]
-[assembly: XmlnsPrefix("https://github.com/ArcticLampyrid/WpfFontPicker", "fp")]
+[assembly: XmlnsDefinition("https://github.com/ArcticLampyrid/XamlFontPicker", "ALampy.XamlFontPicker.WPF")]
+[assembly: XmlnsPrefix("https://github.com/ArcticLampyrid/XamlFontPicker", "fp")]

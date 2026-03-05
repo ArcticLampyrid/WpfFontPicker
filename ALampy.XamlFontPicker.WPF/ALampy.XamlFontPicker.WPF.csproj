@@ -11,7 +11,7 @@
     <Authors>ALampy</Authors>
     <Company>ALampy</Company>
     <Product>ALampy.XamlFontPicker.WPF</Product>
-    <RepositoryUrl>https://github.com/ArcticLampyrid/WpfFontPicker</RepositoryUrl>
+    <RepositoryUrl>https://github.com/ArcticLampyrid/XamlFontPicker</RepositoryUrl>
     <RootNamespace>ALampy.XamlFontPicker.WPF</RootNamespace>
     <AssemblyName>ALampy.XamlFontPicker.WPF</AssemblyName>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>

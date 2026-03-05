@@ -1,8 +1,8 @@
 ﻿# ALampy.XamlFontPicker
-> (formerly WpfFontPicker) A Xaml control for picking fonts, with a built-in font dialog, supporting WPF and Avalonia.
+> A Xaml control for picking fonts, with a built-in font dialog, supporting WPF and Avalonia.
 
 - WPF: [![NuGet](https://img.shields.io/nuget/v/ALampy.XamlFontPicker.WPF.svg)](https://www.nuget.org/packages/ALampy.XamlFontPicker.WPF)   
-  Namespace: `ALampy.XamlFontPicker.WPF`(CLR) or `xmlns:fp="https://github.com/ArcticLampyrid/WpfFontPicker"` (XAML)
+  Namespace: `ALampy.XamlFontPicker.WPF`(CLR) or `xmlns:fp="https://github.com/ArcticLampyrid/XamlFontPicker"` (XAML)
 
 - Avalonia 11: Coming soon
   Namespace: `ALampy.XamlFontPicker.Avalonia` (CLR) or `xmlns:fp="using:ALampy.XamlFontPicker.Avalonia"` (XAML)
@@ -41,7 +41,7 @@ if (result)
 ```
 
 ## Preview
-![Screenshot 1](https://github.com/ArcticLampyrid/WpfFontPicker/blob/master/Screenshot/1.png)   
+![Screenshot 1](https://github.com/ArcticLampyrid/XamlFontPicker/blob/master/Screenshot/1.png)   
 
 ```xaml
 <StackPanel Orientation="Vertical">
