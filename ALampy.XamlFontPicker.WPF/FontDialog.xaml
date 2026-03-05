@@ -32,7 +32,7 @@
             </Grid.RowDefinitions>
             <Label Grid.Row="0" Grid.Column="0" Content="{Binding LabelFamily}" FontSize="18"/>
             <DockPanel Grid.Row="1" Grid.Column="0">
-                <TextBox x:Name="FontSearchTextBox" DockPanel.Dock="Top" Margin="0,0,8,8" FontSize="14" TextChanged="FontSearchTextBox_TextChanged" IsUndoEnabled="False"/>
+                <TextBox x:Name="FontSearchTextBox" DockPanel.Dock="Top" Margin="0,0,0,8" FontSize="14" TextChanged="FontSearchTextBox_TextChanged" IsUndoEnabled="False"/>
                 <ListBox 
                 SelectedItem="{Binding SelectedFontFamily}"
                 x:Name="FontFamilyListbox" ItemsSource="{Binding FontFamilies}" ItemsPanel="{StaticResource VSP}">
