@@ -13,13 +13,13 @@
         Loaded="Window_Loaded">
   <DockPanel>
     <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal" HorizontalAlignment="Right" Spacing="5" Margin="5">
-      <Button x:Name="CancelButton" Content="{Binding CancelText}" MinWidth="80" Padding="10,5" Click="CancelButton_Click" />
-      <Button x:Name="OkButton" Content="{Binding OkText}" MinWidth="80" Padding="10,5" Classes="primary" Click="OkButton_Click" />
+      <Button x:Name="CancelButton" Content="{Binding CancelText}" MinWidth="80" Padding="10,5" Click="CancelButton_Click" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" />
+      <Button x:Name="OkButton" Content="{Binding OkText}" MinWidth="80" Padding="10,5" Classes="primary" Click="OkButton_Click" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" />
     </StackPanel>
 
-    <Grid ColumnDefinitions="*,*,*" RowDefinitions="Auto,*">
-      <TextBlock Grid.Row="0" Grid.Column="0" Text="{Binding LabelFamily}" FontSize="18" Margin="0,0,8,5" />
-      <DockPanel Grid.Row="1" Grid.Column="0" Margin="0,0,8,0">
+    <Grid ColumnDefinitions="*,*,*" RowDefinitions="Auto,*" Margin="5" ColumnSpacing="5" RowSpacing="5">
+      <TextBlock Grid.Row="0" Grid.Column="0" Text="{Binding LabelFamily}" FontSize="18" />
+      <DockPanel Grid.Row="1" Grid.Column="0" >
         <TextBox x:Name="FontSearchTextBox"
                  DockPanel.Dock="Top"
                  Margin="0,0,0,8"
@@ -38,11 +38,10 @@
         </ListBox>
       </DockPanel>
 
-      <TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding LabelTypeface}" FontSize="18" Margin="0,0,8,5" />
+      <TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding LabelTypeface}" FontSize="18"  />
       <ListBox x:Name="FamilyTypefaceListBox"
                Grid.Row="1"
                Grid.Column="1"
-               Margin="0,0,8,0"
                SelectedItem="{Binding SelectedTypefaceItem}"
                ItemsSource="{Binding FamilyTypefaces}">
         <ListBox.ItemTemplate>
@@ -55,14 +54,16 @@
         </ListBox.ItemTemplate>
       </ListBox>
 
-      <TextBlock Grid.Row="0" Grid.Column="2" Text="{Binding LabelSize}" FontSize="18" Margin="0,0,0,5" />
+      <TextBlock Grid.Row="0" Grid.Column="2" Text="{Binding LabelSize}" FontSize="18" />
       <DockPanel Grid.Row="1" Grid.Column="2">
         <ComboBox x:Name="FontSizeComboBox"
                   DockPanel.Dock="Top"
                   FontSize="18"
                   IsEditable="True"
                   Text="{Binding FontSizePt}"
-                  ItemsSource="{Binding FontSizeOptions}">
+                  ItemsSource="{Binding FontSizeOptions}"
+                  HorizontalAlignment="Stretch"
+                  HorizontalContentAlignment="Stretch">
           <ComboBox.ItemTemplate>
             <DataTemplate x:DataType="vm:FontSizeOption">
               <TextBlock Text="{Binding PointSize}" FontSize="{Binding PixelSize}" />
