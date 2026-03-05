@@ -1,0 +1,109 @@
+name: Release CD
+
+on:
+  push:
+    tags:
+      - "v*.*.*"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  pack-wpf:
+    runs-on: windows-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup .NET SDK
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: |
+            3.1.x
+            10.0.x
+
+      - name: Restore
+        run: dotnet restore ALampy.XamlFontPicker.WPF/ALampy.XamlFontPicker.WPF.csproj
+
+      - name: Pack WPF NuGet package
+        run: |
+          if ('${{ github.ref }}' -match '^refs/tags/v(.+)$') {
+            $version = $Matches[1]
+          } else {
+            $version = "0.0.0"
+          }
+          dotnet pack ALampy.XamlFontPicker.WPF/ALampy.XamlFontPicker.WPF.csproj `
+            -c Release `
+            -o "$env:GITHUB_WORKSPACE/artifacts/packages" `
+            -p:Version="$version" `
+            -p:ContinuousIntegrationBuild=true
+        shell: pwsh
+
+      - name: Upload WPF packages
+        uses: actions/upload-artifact@v4
+        with:
+          name: wpf-packages
+          path: artifacts/packages/*
+
+  pack-avalonia:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup .NET SDK
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: "10.0.x"
+
+      - name: Restore
+        run: dotnet restore ALampy.XamlFontPicker.Avalonia/ALampy.XamlFontPicker.Avalonia.csproj
+
+      - name: Pack Avalonia NuGet package
+        run: |
+          if [[ "${{ github.ref }}" =~ ^refs/tags/v(.+)$ ]]; then
+            VERSION="${BASH_REMATCH[1]}"
+          else
+            VERSION="0.0.0"
+          fi
+          mkdir -p "$GITHUB_WORKSPACE/artifacts/packages"
+
+          dotnet pack ALampy.XamlFontPicker.Avalonia/ALampy.XamlFontPicker.Avalonia.csproj \
+            -c Release \
+            -o "$GITHUB_WORKSPACE/artifacts/packages" \
+            -p:Version="$VERSION" \
+            -p:ContinuousIntegrationBuild=true
+
+      - name: Upload Avalonia packages
+        uses: actions/upload-artifact@v4
+        with:
+          name: avalonia-packages
+          path: artifacts/packages/*
+
+  draft-release:
+    needs: [pack-wpf, pack-avalonia]
+    runs-on: ubuntu-slim
+    if: startsWith(github.ref, 'refs/tags/')
+    steps:
+      - name: Download WPF packages
+        uses: actions/download-artifact@v4
+        with:
+          name: wpf-packages
+          path: artifacts/packages
+
+      - name: Download Avalonia packages
+        uses: actions/download-artifact@v4
+        with:
+          name: avalonia-packages
+          path: artifacts/packages
+
+      - name: Create draft release and upload packages
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ github.ref_name }}
+          name: ${{ github.ref_name }}
+          draft: true
+          files: |
+            artifacts/packages/*.nupkg
+            artifacts/packages/*.snupkg
