@@ -35,20 +35,71 @@ namespace ALampy.XamlFontPicker.Avalonia
 
         public FontDialogViewModel()
         {
-            _selectedFontFamily = FontFamily.Default;
-            _selectedTypefaceItem = null;
             _fontSize = 12;
 
-            FontFamilies = FontManager.Current.SystemFonts
-                .OrderBy(f => f.Name)
-                .ToList();
+            FontFamilies = BuildFontFamilies();
+            _selectedFontFamily = FontFamilies.FirstOrDefault() ?? FontFamily.Default;
 
             FontSizeOptions = FontSizeOption.GetDefaultSizeOptions();
+            _selectedTypefaceItem = BuildFamilyTypefaces(_selectedFontFamily).FirstOrDefault();
         }
 
         public IList<FontFamily> FontFamilies { get; }
 
         public IList<FontSizeOption> FontSizeOptions { get; }
+
+        private static List<FontFamily> BuildFontFamilies()
+        {
+            var fontFamilies = FontManager.Current.SystemFonts
+                .OrderBy(f => f.Name)
+                .ToList();
+
+            var hasDefaultFontFamily = fontFamilies.Any(fontFamily =>
+                string.Equals(fontFamily.Name, FontFamily.Default.Name, StringComparison.CurrentCultureIgnoreCase));
+
+            if (!hasDefaultFontFamily)
+                fontFamilies.Insert(0, FontFamily.Default);
+
+            return fontFamilies;
+        }
+
+        private static IList<TypefaceDisplayItem> BuildFamilyTypefaces(FontFamily? family)
+        {
+            if (family == null)
+                return Array.Empty<TypefaceDisplayItem>();
+
+            var typefaces = family.FamilyTypefaces
+                .GroupBy(typeface => (typeface.Weight, typeface.Style, typeface.Stretch))
+                .Select(group => group.First())
+                .Select(typeface => new TypefaceDisplayItem(typeface))
+                .OrderBy(item => item.Typeface.Weight)
+                .ThenBy(item => item.Typeface.Style)
+                .ThenBy(item => item.Typeface.Stretch)
+                .ToList();
+
+            if (typefaces.Count == 0)
+                typefaces.Add(new TypefaceDisplayItem(new Typeface(family, FontStyle.Normal, FontWeight.Normal, FontStretch.Normal)));
+
+            return typefaces;
+        }
+
+        private TypefaceDisplayItem? GetMatchingTypefaceItem(Typeface? previousTypeface)
+        {
+            var familyTypefaces = FamilyTypefaces;
+
+            if (previousTypeface is Typeface previous)
+            {
+                var matchingTypeface = familyTypefaces.FirstOrDefault(item =>
+                    item.Typeface.Weight == previous.Weight
+                    && item.Typeface.Style == previous.Style
+                    && item.Typeface.Stretch == previous.Stretch);
+
+                if (matchingTypeface != null)
+                    return matchingTypeface;
+            }
+
+            return familyTypefaces.FirstOrDefault();
+        }
 
         public FontFamily SelectedFontFamily
         {
@@ -58,32 +109,15 @@ namespace ALampy.XamlFontPicker.Avalonia
                 _selectedFontFamily = value;
                 OnPropertyChanged(nameof(SelectedFontFamily));
                 OnPropertyChanged(nameof(FamilyTypefaces));
+
+                var previousTypeface = _selectedTypefaceItem?.Typeface;
+                SelectedTypefaceItem = GetMatchingTypefaceItem(previousTypeface);
+
                 OnPropertyChanged(nameof(SelectedFontInfo));
             }
         }
 
-        public IList<TypefaceDisplayItem> FamilyTypefaces
-        {
-            get
-            {
-                var family = SelectedFontFamily;
-                if (family == null)
-                    return Array.Empty<TypefaceDisplayItem>();
-
-                var typefaces = new List<TypefaceDisplayItem>();
-                foreach (var weight in new[] { FontWeight.Thin, FontWeight.ExtraLight, FontWeight.Light, FontWeight.Normal, FontWeight.Medium, FontWeight.SemiBold, FontWeight.Bold, FontWeight.ExtraBold, FontWeight.Black })
-                {
-                    foreach (var style in new[] { FontStyle.Normal, FontStyle.Italic })
-                    {
-                        foreach (var stretch in new[] { FontStretch.UltraCondensed, FontStretch.ExtraCondensed, FontStretch.Condensed, FontStretch.SemiCondensed, FontStretch.Normal, FontStretch.SemiExpanded, FontStretch.Expanded, FontStretch.ExtraExpanded, FontStretch.UltraExpanded })
-                        {
-                            typefaces.Add(new TypefaceDisplayItem(new Typeface(family, style, weight, stretch)));
-                        }
-                    }
-                }
-                return typefaces;
-            }
-        }
+        public IList<TypefaceDisplayItem> FamilyTypefaces => BuildFamilyTypefaces(SelectedFontFamily);
 
         public TypefaceDisplayItem? SelectedTypefaceItem
         {
@@ -93,6 +127,9 @@ namespace ALampy.XamlFontPicker.Avalonia
                 _selectedTypefaceItem = value;
                 OnPropertyChanged(nameof(SelectedTypefaceItem));
                 OnPropertyChanged(nameof(SelectedTypeface));
+                OnPropertyChanged(nameof(SelectedFontStyle));
+                OnPropertyChanged(nameof(SelectedFontWeight));
+                OnPropertyChanged(nameof(SelectedFontStretch));
                 OnPropertyChanged(nameof(SelectedFontInfo));
             }
         }
