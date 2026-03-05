@@ -49,7 +49,7 @@ if (result)
 ```
 
 ## Preview
-![Screenshot 1](https://github.com/ArcticLampyrid/XamlFontPicker/blob/master/Screenshot/1.png)   
+![Screenshot 1](https://github.com/ArcticLampyrid/XamlFontPicker/blob/v2.x/Screenshot/1.png)   
 
 ```xaml
 <StackPanel Orientation="Vertical">
