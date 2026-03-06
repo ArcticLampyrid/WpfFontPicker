@@ -17,11 +17,16 @@
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageTags>WPF;Font;FontDialog;FontPicker</PackageTags>
     <PackageDescription>A library providing common FontPicker(Control) and FontDialog for WPF application.</PackageDescription>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
     <EnableWindowsTargeting>true</EnableWindowsTargeting>
   </PropertyGroup>
 
   <ItemGroup Condition="'$(TargetFramework)'=='net40'">
     <Reference Include="Microsoft.CSharp" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="../README.md" Pack="true" PackagePath="" />
   </ItemGroup>
 
   <ItemGroup>

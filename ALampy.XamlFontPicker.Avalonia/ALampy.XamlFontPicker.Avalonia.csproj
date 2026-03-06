@@ -22,7 +22,12 @@
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageTags>Avalonia;Font;FontDialog;FontPicker;XAML</PackageTags>
     <PackageDescription>A library providing common FontPicker (control) and FontDialog for Avalonia applications.</PackageDescription>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="../README.md" Pack="true" PackagePath="" />
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Avalonia" Version="11.3.12" />
