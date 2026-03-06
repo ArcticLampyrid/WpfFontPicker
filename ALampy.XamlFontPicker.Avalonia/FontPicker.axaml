@@ -23,7 +23,9 @@
     <Border Background="Transparent" Padding="8,4">
       <TextBlock VerticalAlignment="Center"
                  FontFamily="{Binding SelectedFontInfo.Family, ElementName=Root}"
-                 FontSize="{Binding SelectedFontInfo.Size, ElementName=Root}"
+                 FontStretch="{Binding SelectedFontInfo.Stretch, ElementName=Root}"
+                 FontStyle="{Binding SelectedFontInfo.Style, ElementName=Root}"
+                 FontWeight="{Binding SelectedFontInfo.Weight, ElementName=Root}"
                  Text="{Binding SelectedFontInfo, ElementName=Root}" />
     </Border>
   </DockPanel>
